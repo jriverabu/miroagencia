@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Miró · Vendedor digital con IA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira:wdth,wght@50..125,100..900&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Identidad Miró: negro, rojo, gris claro, blanco y ámbar. Pares pastel para las caritas. Saira cuadrada como el logo. La idea: la Ò son unos ojos que miran. */
+  --ink:#1B1B1B;
+  --red:#FF2D2D;
+  --gray:#E7E7E7;
+  --white:#FFFFFF;
+  --amber:#F7A928;
+  --green:#2E9461;--green-l:#D8F2E2;
+  --blue:#2F6497;--blue-l:#DCEEF8;
+  --coral:#FF5A5F;--coral-l:#FFD3D8;
+  --orange:#F4A259;--orange-l:#FFEACB;
+  --purple:#6C3BCB;--purple-l:#E6DCFB;
+  --muted:#6B6B6B;
+  --line:rgba(27,27,27,.12);
+  --font:'Saira','Arial Narrow',Arial,sans-serif;
+  --gut:clamp(16px,3.4vw,48px);
+  color-scheme:light;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--white);color:var(--ink);-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+body{background:var(--white);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.45;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button,input{font:inherit;color:inherit}
+button{background:none;border:0;cursor:pointer}
+:focus-visible{outline:3px solid var(--red);outline-offset:3px}
+.wrap{max-width:1360px;margin:0 auto;padding:0 var(--gut)}
+.tag{display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 14px;border-radius:999px;background:var(--gray);font-size:13px;font-weight:600;letter-spacing:.02em}
+.tag i{width:8px;height:8px;border-radius:50%;background:var(--red)}
+.h2{font-weight:800;font-variation-settings:"wdth" 88;font-size:clamp(38px,5.2vw,80px);line-height:.95;letter-spacing:-.02em;text-wrap:balance}
+.lead{font-size:clamp(17px,1.4vw,21px);line-height:1.45;color:#3a3a3a;max-width:46ch}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:56px;padding:0 26px;border-radius:999px;font-weight:700;font-size:16px;letter-spacing:.01em;transition:transform .2s,background .2s,color .2s}
+.btn:hover{transform:translateY(-2px)}
+.btn-red{background:var(--red);color:var(--white)}
+.btn-red:hover{background:var(--ink)}
+.btn-line{border:2px solid var(--ink)}
+.btn-line:hover{background:var(--ink);color:var(--white)}
+.note{font-size:12.5px;color:var(--muted)}
+
+/* carita */
+.face{display:block;width:100%;height:auto;overflow:visible}
+.face .f-bg{fill:var(--fbg,transparent)}
+.face .eye{fill:none;stroke:var(--fc,#1B1B1B);stroke-width:6.5}
+.face .pupil{fill:var(--fc,#1B1B1B)}
+.face .brow,.face .mouth{fill:none;stroke:var(--fc,#1B1B1B);stroke-width:6.5;stroke-linecap:round;stroke-linejoin:round}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.88);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid transparent;transition:border-color .3s}
+.nav.scrolled{border-color:var(--line)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:72px;gap:16px}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-badge{width:42px;height:42px;border-radius:50%;padding:3px;background:conic-gradient(from 200deg,#18C3E6,#6C3BCB,#E03A8C,#F7A928,#18C3E6)}
+.logo-badge span{display:grid;place-items:center;width:100%;height:100%;border-radius:50%;background:var(--ink);border:2px solid var(--white)}
+.logo-badge svg{width:70%}
+.logo b{font-weight:700;font-size:28px;letter-spacing:.02em;font-variation-settings:"wdth" 100}
+.links{display:flex;align-items:center;gap:4px}
+.links a{padding:10px 14px;border-radius:999px;font-weight:600;font-size:15px;transition:background .2s}
+.links a:hover{background:var(--gray)}
+.links .btn{height:44px;padding:0 20px;margin-left:8px;font-size:15px}
+
+/* hero */
+.hero{padding:clamp(28px,5vw,72px) 0 clamp(48px,6vw,96px)}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:clamp(28px,5vw,80px);align-items:center}
+.hero h1{font-weight:800;font-variation-settings:"wdth" 86;font-size:clamp(46px,6.6vw,108px);line-height:.92;letter-spacing:-.025em;margin-top:22px}
+.hero h1 .r{color:var(--red);display:block}
+.hero .lead{margin-top:24px}
+.hero-ctas{display:flex;flex-wrap:wrap;gap:10px;margin-top:32px}
+.trust{margin-top:40px;display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px;font-weight:600;color:var(--muted);font-size:14.5px}
+.trust b{color:var(--ink);font-weight:700}
+
+/* teléfono de demo */
+.demo{position:relative;justify-self:center;width:min(100%,420px);padding-top:64px}
+.demo-face{position:absolute;right:-26px;top:0;width:clamp(104px,10vw,140px);z-index:2}
+.phone{position:relative;background:var(--ink);border-radius:42px;padding:12px;box-shadow:0 40px 80px -30px rgba(27,27,27,.45)}
+.screen{background:#F3F2EF;border-radius:32px;overflow:hidden;display:flex;flex-direction:column;height:min(600px,68svh);min-height:480px}
+.chat-head{display:flex;align-items:center;gap:12px;padding:16px 16px 12px;background:var(--white);border-bottom:1px solid var(--line)}
+.chat-av{width:40px;height:40px;border-radius:50%;flex:none;background:var(--red);display:grid;place-items:center}
+.chat-av svg{width:78%}
+.chat-head b{display:block;font-size:16px;line-height:1.1}
+.chat-head small{font-size:12.5px;color:var(--green);font-weight:600}
+.biz{display:flex;gap:6px;padding:10px 12px;background:var(--white);overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--line)}
+.biz button{flex:none;height:30px;padding:0 12px;border-radius:999px;border:1.5px solid var(--line);font-size:13px;font-weight:600;white-space:nowrap}
+.biz button[aria-pressed="true"]{background:var(--ink);color:var(--white);border-color:var(--ink)}
+.msgs{flex:1;overflow-y:auto;padding:16px 14px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth}
+.bub{max-width:84%;padding:10px 13px;border-radius:16px;font-size:15px;line-height:1.38;position:relative}
+.bub.them{align-self:flex-start;background:var(--white);border-bottom-left-radius:4px;box-shadow:0 1px 0 rgba(0,0,0,.05)}
+.bub.me{align-self:flex-end;background:var(--ink);color:var(--white);border-bottom-right-radius:4px}
+.bub .meta{display:block;margin-top:4px;font-size:11px;font-weight:600;color:var(--red)}
+.typing{align-self:flex-start;background:var(--white);border-radius:16px;padding:12px 14px;display:flex;gap:4px}
+.typing i{width:7px;height:7px;border-radius:50%;background:#9a9a9a}
+.sugg{display:flex;gap:6px;padding:0 12px 8px;overflow-x:auto;scrollbar-width:none}
+.sugg button{flex:none;height:32px;padding:0 12px;border-radius:999px;background:var(--white);border:1.5px solid var(--red);color:var(--red);font-size:13px;font-weight:600;white-space:nowrap}
+.sugg button:hover{background:var(--red);color:var(--white)}
+.compose{display:flex;gap:8px;padding:10px 12px 14px;background:#F3F2EF}
+.compose input{flex:1;min-width:0;height:46px;border-radius:999px;border:1.5px solid var(--line);background:var(--white);padding:0 16px;font-size:15px}
+.compose input:focus{outline:none;border-color:var(--ink)}
+.compose button{width:46px;height:46px;border-radius:50%;background:var(--red);color:var(--white);display:grid;place-items:center;flex:none}
+.compose button svg{width:20px}
+.demo-cap{margin-top:14px;text-align:center}
+
+/* la noche */
+.night{position:relative;background:var(--ink);color:var(--white);overflow:hidden}
+.night-pin{min-height:100svh;display:flex;align-items:center;padding:clamp(70px,9vh,110px) 0 clamp(30px,5vh,60px)}
+.night .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.9fr);gap:clamp(28px,5vw,80px);align-items:center;width:100%}
+.night .tag{background:rgba(255,255,255,.1);color:var(--white)}
+.clock-row{display:flex;align-items:center;gap:clamp(14px,2vw,28px);margin-top:22px}
+.night-face{width:clamp(90px,10vw,140px);flex:none}
+.clock{font-weight:800;font-variation-settings:"wdth" 70;font-size:clamp(76px,11vw,180px);line-height:.85;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.clock small{font-size:.32em;font-variation-settings:"wdth" 100;font-weight:600;margin-left:.15em;letter-spacing:0}
+.story{margin-top:26px;font-size:clamp(22px,2.4vw,36px);font-weight:700;font-variation-settings:"wdth" 90;line-height:1.1;max-width:20ch;min-height:2.3em}
+.counters{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:30px;max-width:520px}
+.cnt{border:1.5px solid rgba(255,255,255,.16);border-radius:18px;padding:16px 18px;transition:background .4s,border-color .4s}
+.cnt b{display:block;font-size:clamp(36px,3.6vw,56px);font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.cnt span{font-size:14px;opacity:.75}
+.cnt.bad b{color:var(--coral)}
+.cnt.good{background:var(--red);border-color:var(--red)}
+.cnt.good b{color:var(--white)}
+.switch-row{display:flex;align-items:center;gap:14px;margin-top:22px;font-weight:700}
+.toggle{position:relative;width:64px;height:36px;border-radius:999px;background:rgba(255,255,255,.18)}
+.toggle i{position:absolute;left:4px;top:4px;width:28px;height:28px;border-radius:50%;background:var(--white)}
+.nphone{justify-self:center;width:min(100%,380px);background:#0d0d0d;border-radius:40px;padding:12px;box-shadow:0 0 0 1px rgba(255,255,255,.08)}
+.nscreen{background:#151515;border-radius:30px;height:min(560px,64svh);min-height:420px;overflow:hidden;display:flex;flex-direction:column}
+.nhead{display:flex;justify-content:space-between;align-items:center;padding:16px 18px 12px;border-bottom:1px solid rgba(255,255,255,.08)}
+.nhead b{font-size:15px}
+.badge{min-width:30px;height:24px;padding:0 8px;border-radius:999px;background:var(--red);font-size:13px;font-weight:800;display:grid;place-items:center;font-variant-numeric:tabular-nums}
+.nlist{flex:1;overflow:hidden;padding:10px 12px;display:flex;flex-direction:column;gap:8px;justify-content:flex-end}
+.nmsg{display:grid;grid-template-columns:36px 1fr auto;gap:10px;align-items:center;padding:10px 12px;border-radius:14px;background:#202020}
+.nmsg .av{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:14px;color:var(--ink)}
+.nmsg b{display:block;font-size:14px;line-height:1.2}
+.nmsg p{font-size:13.5px;opacity:.8;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nmsg time{font-size:11.5px;opacity:.55;align-self:start;text-align:right;white-space:nowrap}
+.nmsg .ok{grid-column:2/-1;font-size:12px;font-weight:700;color:#7EE2A8;display:none}
+.nmsg.done .ok{display:block}
+.nmsg.done{background:#1d2a22}
+
+/* calculadora */
+.calc{padding:clamp(72px,9vw,140px) 0;background:var(--gray)}
+.calc .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,5vw,80px);align-items:center}
+.sliders{display:grid;gap:22px;margin-top:34px}
+.sl label{display:flex;justify-content:space-between;gap:12px;font-weight:600;font-size:16px}
+.sl label output{font-weight:800;font-variant-numeric:tabular-nums}
+.sl input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:8px;border-radius:999px;background:linear-gradient(to right,var(--ink) var(--p,50%),rgba(27,27,27,.15) var(--p,50%));margin-top:12px}
+.sl input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;border-radius:50%;background:var(--red);border:4px solid var(--white);box-shadow:0 2px 8px rgba(0,0,0,.25);cursor:grab}
+.sl input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--red);border:4px solid var(--white);box-shadow:0 2px 8px rgba(0,0,0,.25);cursor:grab}
+.result{background:var(--white);border-radius:32px;padding:clamp(24px,3.4vw,48px);display:grid;gap:18px;justify-items:start;box-shadow:0 30px 60px -36px rgba(27,27,27,.4)}
+.result-face{width:clamp(110px,11vw,150px)}
+.result .big{font-weight:800;font-variation-settings:"wdth" 80;font-size:clamp(54px,6.4vw,104px);line-height:.88;color:var(--red);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.result .vs{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%}
+.result .vs div{border-radius:18px;padding:14px 16px;background:var(--gray)}
+.result .vs b{display:block;font-size:24px;font-weight:800;line-height:1.1}
+.result .vs span{font-size:14px;color:var(--muted)}
+
+/* productos */
+.products{padding:clamp(72px,9vw,140px) 0}
+.p-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px 60px;flex-wrap:wrap;margin-bottom:clamp(30px,4vw,56px)}
+.p-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.prod{position:relative;border-radius:32px;padding:clamp(24px,3vw,44px);background:var(--pl);display:flex;flex-direction:column;gap:18px;overflow:hidden}
+.prod-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.prod-face{width:clamp(84px,8vw,112px);flex:none}
+.prod .when{display:inline-flex;height:32px;align-items:center;padding:0 14px;border-radius:999px;background:var(--pc);color:var(--white);font-weight:700;font-size:13.5px}
+.prod h3{font-weight:800;font-variation-settings:"wdth" 88;font-size:clamp(36px,3.8vw,60px);line-height:.92;letter-spacing:-.02em;margin-top:12px}
+.prod h3 span{color:var(--pc)}
+.prod .desc{font-size:18px;line-height:1.4;max-width:34ch}
+.prod ul{list-style:none;display:grid;gap:8px}
+.prod li{display:grid;grid-template-columns:24px 1fr;gap:8px;font-size:16px;line-height:1.35}
+.prod li::before{content:"";width:16px;height:16px;margin-top:3px;border-radius:5px;border:3px solid var(--pc)}
+.price{margin-top:auto;padding-top:18px;border-top:2px solid rgba(27,27,27,.12);display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 14px}
+.price b{font-size:clamp(30px,3vw,44px);font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.price span{font-size:15px;color:#444}
+.extras{margin-top:18px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.extras .tag{background:var(--white);border:1.5px solid var(--line)}
+
+/* cómo funciona */
+.steps{padding:clamp(72px,9vw,140px) 0;background:var(--ink);color:var(--white)}
+.steps .tag{background:rgba(255,255,255,.1);color:var(--white)}
+.steps .lead{color:rgba(255,255,255,.75)}
+.s-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:clamp(30px,4vw,56px);counter-reset:s}
+.step{border-radius:28px;padding:24px;background:#252525;display:flex;flex-direction:column;gap:14px;min-height:340px}
+.step-face{width:84px}
+.step small{font-weight:700;color:var(--amber);font-size:14px}
+.step h3{font-weight:800;font-variation-settings:"wdth" 90;font-size:30px;line-height:.95}
+.step p{font-size:15.5px;line-height:1.45;opacity:.8}
+
+/* confiaron */
+.trusted{padding:clamp(56px,7vw,100px) 0;overflow:hidden}
+.trusted .wrap{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:28px}
+.mq{white-space:nowrap}
+.mq-in{display:inline-flex;align-items:center}
+.mq-in span{display:inline-flex;align-items:center;gap:22px;padding-right:22px;font-weight:800;font-variation-settings:"wdth" 80;font-size:clamp(46px,7vw,110px);line-height:1.05;letter-spacing:-.02em}
+.mq-in .mf{width:clamp(48px,6vw,90px)}
+
+/* cierre */
+.final{background:var(--red);color:var(--white);padding:clamp(72px,10vw,150px) 0 40px;overflow:hidden}
+.final .wrap{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);gap:clamp(24px,5vw,80px);align-items:center}
+.final h2{font-weight:800;font-variation-settings:"wdth" 84;font-size:clamp(48px,7vw,120px);line-height:.9;letter-spacing:-.025em;text-wrap:balance}
+.final .lead{color:rgba(255,255,255,.9);margin-top:22px}
+.final .btn-w{background:var(--white);color:var(--ink);margin-top:32px}
+.final .btn-w:hover{background:var(--ink);color:var(--white)}
+.final-face{width:min(100%,360px);justify-self:center}
+.wa-note{margin-top:12px;font-size:14px;min-height:1.4em;color:rgba(255,255,255,.9)}
+.foot{margin-top:clamp(56px,7vw,100px);padding-top:22px;border-top:1.5px solid rgba(255,255,255,.35);display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.lockup{display:flex;align-items:center;gap:12px}
+.lockup b{font-size:40px;font-weight:700;letter-spacing:.02em;line-height:1}
+.lockup span{font-size:15px;line-height:1;text-transform:uppercase;letter-spacing:.04em;font-weight:500}
+.foot p{font-size:14px;opacity:.9}
+
+/* ciclo del vendedor */
+.loop{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-weight:700;font-size:14px}
+.loop span{padding:7px 12px;border-radius:999px;background:var(--white)}
+.loop i{position:relative;width:26px;height:2px;background:rgba(27,27,27,.25);overflow:hidden}
+.loop i::after{content:"";position:absolute;top:-2px;left:-6px;width:6px;height:6px;border-radius:50%;background:var(--pc);animation:run 1.4s linear infinite}
+.loop i:nth-of-type(2)::after{animation-delay:.7s}
+@keyframes run{to{left:30px}}
+
+/* voz */
+.voice{padding:clamp(72px,9vw,140px) 0;background:var(--orange-l)}
+.voice .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.9fr);gap:clamp(28px,5vw,80px);align-items:center}
+.vtabs{display:flex;flex-wrap:wrap;gap:8px;margin:28px 0 14px}
+.vtabs button{height:44px;padding:0 18px;border-radius:999px;border:2px solid var(--ink);font-weight:700;font-size:15px}
+.vtabs button[aria-pressed="true"]{background:var(--ink);color:var(--white)}
+.call{background:var(--ink);color:var(--white);border-radius:32px;padding:clamp(22px,2.6vw,34px);display:grid;gap:20px;box-shadow:0 30px 60px -30px rgba(27,27,27,.5)}
+.call-top{display:flex;align-items:center;gap:14px}
+.call-face{width:64px;flex:none}
+.call-top b{display:block;font-size:20px;line-height:1.1}
+.call-top small{font-size:13.5px;color:var(--orange);font-weight:600}
+.call-time{margin-left:auto;font-variant-numeric:tabular-nums;font-weight:700;opacity:.7}
+.wave{display:flex;align-items:center;gap:4px;height:70px}
+.wave i{flex:1;height:14%;border-radius:4px;background:var(--orange)}
+.transcript{font-size:clamp(18px,1.6vw,23px);line-height:1.45;font-weight:600;color:rgba(255,255,255,.45);min-height:5.8em}
+.transcript span{transition:color .2s}
+.transcript span.on{color:var(--white)}
+.call .btn{justify-self:start}
+
+/* eventos */
+.events{padding:clamp(72px,9vw,140px) 0;background:var(--ink);color:var(--white)}
+.events .tag{background:rgba(255,255,255,.1);color:var(--white)}
+.events .lead{color:rgba(255,255,255,.75);margin-top:18px}
+.events .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.85fr);gap:clamp(28px,5vw,80px);align-items:center}
+.stages{display:grid;gap:8px;margin:30px 0 26px}
+.stage{display:grid;grid-template-columns:44px 1fr;gap:4px 14px;text-align:left;padding:16px 18px;border-radius:20px;border:1.5px solid rgba(255,255,255,.12);transition:background .3s,border-color .3s}
+.stage .n{grid-row:1/3;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-weight:800;background:rgba(255,255,255,.08)}
+.stage b{font-size:19px;line-height:1.2}
+.stage p{font-size:14.5px;line-height:1.4;opacity:.7}
+.stage[aria-selected="true"]{background:var(--white);color:var(--ink);border-color:var(--white)}
+.stage[aria-selected="true"] .n{background:var(--red);color:var(--white)}
+.stage[aria-selected="true"] p{opacity:.8}
+.ev-cta{display:flex;align-items:center;flex-wrap:wrap;gap:12px 18px}
+.ev-cta .note{color:rgba(255,255,255,.55)}
+.ev-demo{position:relative;justify-self:center;width:min(100%,380px);padding-top:56px}
+.ev-face{position:absolute;right:-18px;top:0;width:118px;z-index:2}
+.ev-phone{background:#0d0d0d;border-radius:40px;padding:12px;box-shadow:0 0 0 1px rgba(255,255,255,.08)}
+.ev-screen{background:#F3F2EF;color:var(--ink);border-radius:30px;height:470px;display:flex;flex-direction:column;overflow:hidden}
+.ev-head{padding:16px 18px 12px;background:var(--white);border-bottom:1px solid var(--line)}
+.ev-head b{display:block;font-size:16px}
+.ev-head small{font-size:12.5px;color:var(--muted);font-weight:600}
+.ev-bar{height:4px;background:var(--gray)}
+.ev-bar i{display:block;height:100%;width:0;background:var(--red)}
+.ev-msgs{flex:1;padding:16px 14px;display:flex;flex-direction:column;gap:10px;justify-content:flex-end}
+.sys{align-self:center;padding:6px 12px;border-radius:999px;background:var(--ink);color:var(--white);font-size:12.5px;font-weight:700;text-align:center}
+
+/* catálogo */
+.catalog{padding:clamp(72px,9vw,140px) 0;background:var(--gray)}
+.needs{display:flex;flex-wrap:wrap;gap:8px;margin:28px 0 26px}
+.needs button{height:42px;padding:0 16px;border-radius:999px;background:var(--white);font-weight:700;font-size:14.5px;border:2px solid transparent}
+.needs button[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--white)}
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.svc{position:relative;background:var(--white);border-radius:26px;padding:20px;display:flex;flex-direction:column;gap:10px;min-height:250px}
+.svc-face{width:62px}
+.svc h3{font-size:22px;font-weight:800;line-height:1.05;font-variation-settings:"wdth" 92}
+.svc p{font-size:15px;line-height:1.4;color:#444}
+.svc .meta{margin-top:auto;display:flex;flex-wrap:wrap;gap:6px}
+.svc .meta span{font-size:12.5px;font-weight:700;padding:5px 10px;border-radius:999px;background:var(--gray)}
+.svc .meta .days{background:var(--sc);color:var(--white)}
+.svc .flag{position:absolute;top:16px;right:16px;font-size:12px;font-weight:800;padding:5px 10px;border-radius:999px;background:var(--red);color:var(--white)}
+.svc .flag.soon{background:var(--ink)}
+
+/* diferencia */
+.diff{padding:clamp(72px,9vw,140px) 0}
+.d-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:clamp(30px,4vw,56px)}
+.dcard{border-radius:26px;padding:24px;border:2px solid var(--ink);display:flex;flex-direction:column;gap:10px;transition:background .3s,color .3s}
+.dcard:hover{background:var(--ink);color:var(--white)}
+.dcard .k{font-size:clamp(34px,3.4vw,52px);font-weight:800;font-variation-settings:"wdth" 78;line-height:.95;color:var(--red)}
+.dcard h3{font-size:21px;font-weight:800;line-height:1.1}
+.dcard p{font-size:15.5px;line-height:1.45;opacity:.8}
+
+/* portafolio */
+.port-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-bottom:clamp(36px,5vw,64px)}
+.ptile{border-radius:26px;padding:20px;background:var(--pl);display:flex;flex-direction:column;gap:10px;min-height:270px}
+.ptile .pf{width:60px}
+.ptile h3{font-size:21px;font-weight:800;line-height:1.05}
+.ptile p{font-size:14.5px;line-height:1.4;color:#3d3d3d}
+.ptile small{margin-top:auto;font-size:12.5px;font-weight:700;color:var(--pc)}
+.subs{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:14px;font-size:14px}
+.subs span{opacity:.85}
+.subs b{font-weight:700}
+
+@media (max-width:960px){
+  .voice .wrap,.events .wrap{grid-template-columns:minmax(0,1fr)}
+  .d-grid{grid-template-columns:minmax(0,1fr)}
+  .port-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .ev-face{right:-4px}
+}
+@media (max-width:960px){
+  .links a:not(.btn){display:none}
+  .hero .wrap,.night .wrap,.calc .wrap,.final .wrap{grid-template-columns:minmax(0,1fr)}
+  .p-grid{grid-template-columns:minmax(0,1fr)}
+  .s-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .step{min-height:0}
+  .nscreen{height:46svh;min-height:340px}
+  .night-pin{align-items:flex-start}
+  .story{min-height:0}
+  .counters{margin-top:18px}
+  .final-face{width:200px;justify-self:start}
+  .demo-face{right:-4px}
+}
+@media (max-width:560px){
+  .s-grid{grid-template-columns:1fr}
+  .result .vs{grid-template-columns:1fr}
+  .clock-row{gap:12px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a href="#inicio" class="logo" aria-label="Miró, inicio">
+      <span class="logo-badge"><span><svg viewBox="0 0 120 110" aria-hidden="true"><rect x="22" y="34" width="32" height="38" rx="11" fill="none" stroke="#fff" stroke-width="7"/><rect x="66" y="34" width="32" height="38" rx="11" fill="none" stroke="#fff" stroke-width="7"/><path d="M74,16 L88,26" stroke="#fff" stroke-width="7" stroke-linecap="round"/><path d="M46,86 Q60,96 74,86" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round"/></svg></span></span>
+      <b>MIRÒ</b>
+    </a>
+    <nav class="links" aria-label="Secciones">
+      <a href="#noche">La noche</a>
+      <a href="#productos">Productos</a>
+      <a href="#eventos">Eventos</a>
+      <a href="#servicios">Servicios</a>
+      <a href="#portafolio">Portafolio</a>
+      <a href="#contacto" class="btn btn-red">Quiero a Miró</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<section class="hero" id="inicio">
+  <div class="wrap">
+    <div>
+      <span class="tag"><i></i>Vendedor digital con IA para tu WhatsApp</span>
+      <h1>Te escribieron a las 9:47 p. m. <span class="r">Miró ya contestó.</span></h1>
+      <p class="lead">Miró atiende tu WhatsApp las 24 horas: responde en segundos, cotiza, agenda y cierra ventas mientras tú duermes. Pruébalo aquí al lado, escríbele como si fueras tu cliente.</p>
+      <div class="hero-ctas">
+        <a href="#contacto" class="btn btn-red">Quiero a Miró en mi negocio</a>
+        <a href="#calculadora" class="btn btn-line">¿Cuánto estoy perdiendo?</a>
+      </div>
+      <p class="trust">Ya confiaron en nosotros: <b>Bruder</b> · <b>Alitas Colombianas</b> · <b>MinTIC</b> · <b>Vitalia</b> · <b>Varietale</b></p>
+    </div>
+
+    <div class="demo" id="demo">
+      <div class="demo-face" data-face data-fc="#FFFFFF" data-fbg="#FF2D2D" data-emotion="happy"></div>
+      <div class="phone">
+        <div class="screen">
+          <div class="chat-head">
+            <span class="chat-av" data-face data-fc="#FFFFFF" data-fbg="transparent" data-emotion="happy" data-static></span>
+            <div><b id="bizName">Tu restaurante</b><small>en línea · responde Miró</small></div>
+          </div>
+          <div class="biz" id="biz" role="group" aria-label="Tipo de negocio de la demo"></div>
+          <div class="msgs" id="msgs" aria-live="polite"></div>
+          <div class="sugg" id="sugg"></div>
+          <form class="compose" id="compose" autocomplete="off">
+            <label for="msgIn" class="sr" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Escribe un mensaje</label>
+            <input id="msgIn" maxlength="280" placeholder="Escríbele como cliente…">
+            <button type="submit" aria-label="Enviar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button>
+          </form>
+        </div>
+      </div>
+      <p class="note demo-cap" id="demoCap">Demo con un negocio de ejemplo. Tus datos no se guardan.</p>
+    </div>
+  </div>
+</section>
+
+<section class="night" id="noche">
+  <div class="night-pin">
+    <div class="wrap">
+      <div>
+        <span class="tag">Una noche normal en tu WhatsApp</span>
+        <div class="clock-row">
+          <div class="night-face" id="nightFace" data-face data-fc="#1B1B1B" data-fbg="#FFD3D8" data-emotion="neutral"></div>
+          <div class="clock" aria-live="off"><span id="clk">7:00</span><small id="ampm">p. m.</small></div>
+        </div>
+        <p class="story" id="story">Cierras el local y te vas a descansar.</p>
+        <div class="counters">
+          <div class="cnt bad" id="c1"><b id="c1v">0</b><span id="c1l">mensajes sin responder</span></div>
+          <div class="cnt bad" id="c2"><b id="c2v">0</b><span id="c2l">clientes que le compraron a otro</span></div>
+        </div>
+        <div class="switch-row"><span class="toggle" aria-hidden="true"><i id="tog"></i></span><span id="togL">Miró apagado</span></div>
+        <p class="note" style="color:rgba(255,255,255,.55);margin-top:14px">Noche de ejemplo para ilustrar. Sigue bajando.</p>
+      </div>
+      <div class="nphone" aria-hidden="true">
+        <div class="nscreen">
+          <div class="nhead"><b>WhatsApp del negocio</b><span class="badge" id="badge">0</span></div>
+          <div class="nlist" id="nlist"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="calc" id="calculadora">
+  <div class="wrap">
+    <div>
+      <span class="tag"><i></i>Calculadora</span>
+      <h2 class="h2" style="margin-top:18px">¿Cuánta plata se te va por no contestar a tiempo?</h2>
+      <div class="sliders">
+        <div class="sl"><label for="sChats">Chats nuevos al día <output id="oChats"></output></label><input type="range" id="sChats" min="5" max="200" step="1" value="25"></div>
+        <div class="sl"><label for="sLate">De esos, los que contestas tarde o nunca <output id="oLate"></output></label><input type="range" id="sLate" min="5" max="80" step="1" value="35"></div>
+        <div class="sl"><label for="sTicket">Lo que vale una venta promedio <output id="oTicket"></output></label><input type="range" id="sTicket" min="10000" max="2000000" step="5000" value="70000"></div>
+        <div class="sl"><label for="sClose">De cada 10 chats bien atendidos, compran <output id="oClose"></output></label><input type="range" id="sClose" min="1" max="6" step="1" value="2"></div>
+      </div>
+    </div>
+    <div class="result" aria-live="polite">
+      <div class="result-face" id="calcFace" data-face data-fc="#1B1B1B" data-fbg="#FFD3D8" data-emotion="sad"></div>
+      <span style="font-weight:700">Se te van cerca de</span>
+      <b class="big" id="loss">$0</b>
+      <span style="font-weight:700;margin-top:-8px">al mes en ventas que no cerraste.</span>
+      <div class="vs">
+        <div><b>$600.000</b><span>lo que cuesta Miró Vendedor al mes</span></div>
+        <div><b id="payback">0 ventas</b><span>recuperadas al mes y Miró se paga solo</span></div>
+      </div>
+      <p class="note">Cálculo ilustrativo: chats al día × 30 días × % sin atender × tasa de cierre × venta promedio.</p>
+    </div>
+  </div>
+</section>
+
+<section class="products" id="productos">
+  <div class="wrap">
+    <div class="p-head">
+      <div><span class="tag"><i></i>Dos productos, nada de relleno</span><h2 class="h2" style="margin-top:18px">Elige por dónde arrancar.</h2></div>
+      <p class="lead">Hacemos dos cosas y las hacemos rápido. Precio fijo, sin letra pequeña, y las cuentas quedan a tu nombre.</p>
+    </div>
+    <div class="p-grid">
+      <article class="prod" style="--pc:#6C3BCB;--pl:#E6DCFB">
+        <div class="prod-top">
+          <div><span class="when">Listo en 15 días máximo</span><h3>Miró <span>Vendedor</span></h3></div>
+          <div class="prod-face" data-face data-fc="#6C3BCB" data-fbg="#FFFFFF" data-emotion="smirk"></div>
+        </div>
+        <p class="desc">Tu vendedor digital en WhatsApp. Responde, cotiza, agenda y cierra a cualquier hora, con tu forma de hablar.</p>
+        <ul>
+          <li>Línea oficial de WhatsApp Business (API de Meta) a tu nombre</li>
+          <li>Entrenado con tu catálogo, precios y horarios</li>
+          <li>Agenda citas y toma pedidos sin que tú intervengas</li>
+          <li>Pasa la conversación a una persona cuando hace falta</li>
+          <li>Piloto de 7 días con revisión humana antes de soltarlo</li>
+          <li>Reporte semanal: qué preguntaron y qué se vendió</li>
+        </ul>
+        <div class="loop" aria-label="El ciclo de Miró: vende, automatiza y cierra"><span>Vende</span><i></i><span>Automatiza</span><i></i><span>Cierra</span></div>
+        <div class="price"><b>$600.000</b><span>al mes · montaje de $1.500.000</span></div>
+      </article>
+      <article class="prod" style="--pc:#2F6497;--pl:#DCEEF8">
+        <div class="prod-top">
+          <div><span class="when">Lista en 3 días</span><h3>Miró <span>Web</span></h3></div>
+          <div class="prod-face" data-face data-fc="#2F6497" data-fbg="#FFFFFF" data-emotion="happy"></div>
+        </div>
+        <p class="desc">Tu página web con asistente de IA incluido. Atiende dudas, muestra lo que vendes y manda al cliente directo a tu WhatsApp.</p>
+        <ul>
+          <li>Diseño con tu marca, pensada para celular</li>
+          <li>Asistente IA que responde preguntas en la página</li>
+          <li>Dominio, hosting, asistente IA y soporte incluidos en la mensualidad</li>
+          <li>Botón directo a tu WhatsApp en cada sección</li>
+          <li>Lista para enlazar en Instagram y Google</li>
+        </ul>
+        <div class="price"><b>$1.500.000</b><span>pago único · $120.000 al mes de mantenimiento</span></div>
+      </article>
+    </div>
+    <div class="extras"><span class="note" style="font-size:14px;font-weight:600;color:var(--ink)">Súmale:</span><a class="tag" href="#voz">Recordatorios de voz con IA</a><a class="tag" href="#eventos">Sistema para eventos</a><a class="tag" href="#servicios">Ver los 11 servicios</a></div>
+  </div>
+</section>
+
+<section class="voice" id="voz">
+  <div class="wrap">
+    <div>
+      <span class="tag"><i></i>Recordatorios de voz con IA</span>
+      <h2 class="h2" style="margin-top:18px">Miró también llama. Y no se le olvida nadie.</h2>
+      <p class="lead" style="margin-top:20px">Llamadas cortas de voz que recuerdan citas, eventos y pagos, y le piden al cliente que confirme por WhatsApp. Menos citas perdidas, menos sillas vacías, menos cartera atrasada.</p>
+      <div class="vtabs" id="vtabs" role="group" aria-label="Tipo de recordatorio">
+        <button type="button" data-v="cita" aria-pressed="true">Cita</button>
+        <button type="button" data-v="evento" aria-pressed="false">Evento</button>
+        <button type="button" data-v="pago" aria-pressed="false">Pago</button>
+      </div>
+      <p class="note">Solo llamamos en los horarios que permite la Ley 2300 de 2023: lunes a viernes de 7 a. m. a 7 p. m. y sábados de 8 a. m. a 3 p. m.</p>
+    </div>
+    <div class="call">
+      <div class="call-top"><div class="call-face" id="callFace" data-face data-fc="#1B1B1B" data-fbg="#FFEACB" data-emotion="happy"></div><div><b>Miró</b><small id="callState">Listo para llamar</small></div><span class="call-time" id="callTime">00:00</span></div>
+      <div class="wave" id="wave" aria-hidden="true"></div>
+      <p class="transcript" id="transcript"></p>
+      <button class="btn btn-red" id="playVoice" type="button">Escuchar el recordatorio</button>
+      <p class="note" id="voiceNote" style="color:rgba(255,255,255,.6)">Voz de prueba generada por tu navegador. Sube el volumen.</p>
+    </div>
+  </div>
+</section>
+
+<section class="events" id="eventos">
+  <div class="wrap">
+    <div>
+      <span class="tag">Eventos · temporada de fin de año</span>
+      <h2 class="h2" style="margin-top:18px">Tu evento, atendido antes, durante y después.</h2>
+      <p class="lead">Nosotros lo gestionamos de punta a punta: llenamos el evento, atendemos a cada asistente por WhatsApp y lo convertimos en cliente cuando se acaba.</p>
+      <div class="stages" id="stages" role="tablist" aria-label="Etapas del evento"></div>
+      <div class="ev-cta"><a href="#contacto" class="btn btn-red">Cotizar mi evento</a><span class="note">eventos.miroagencia.com · muy pronto</span></div>
+    </div>
+    <div class="ev-demo">
+      <div class="ev-face" id="evFace" data-face data-fc="#FFFFFF" data-fbg="#FF2D2D" data-emotion="surprised"></div>
+      <div class="ev-phone">
+        <div class="ev-screen">
+          <div class="ev-head"><b>Lanzamiento de ejemplo</b><small id="evStage">Antes del evento</small></div>
+          <div class="ev-bar"><i id="evBar"></i></div>
+          <div class="ev-msgs" id="evMsgs" aria-live="polite"></div>
+        </div>
+      </div>
+      <p class="note" style="color:rgba(255,255,255,.5);text-align:center;margin-top:12px">Conversación de ejemplo</p>
+    </div>
+  </div>
+</section>
+
+<section class="catalog" id="servicios">
+  <div class="wrap">
+    <div class="p-head" style="margin-bottom:0">
+      <div><span class="tag" style="background:var(--white)"><i></i>Toda la máquina</span><h2 class="h2" style="margin-top:18px">Todo lo que hacemos, con fecha de entrega.</h2></div>
+      <p class="lead">Arrancamos por lo que más plata te deja y vamos sumando piezas. Cada servicio tiene un tiempo de entrega claro desde el día uno.</p>
+    </div>
+    <div class="needs" id="needs" role="group" aria-label="Filtrar por lo que necesitas">
+      <button type="button" data-need="all" aria-pressed="true">Todo</button>
+      <button type="button" data-need="vender" aria-pressed="false">Quiero vender más</button>
+      <button type="button" data-need="pro" aria-pressed="false">Quiero verme profesional</button>
+      <button type="button" data-need="evento" aria-pressed="false">Tengo un evento</button>
+      <button type="button" data-need="aprender" aria-pressed="false">Quiero que mi equipo aprenda</button>
+      <button type="button" data-need="cuentas" aria-pressed="false">Quiero ordenar cuentas y cobros</button>
+    </div>
+    <div class="cat-grid" id="catGrid"></div>
+  </div>
+</section>
+
+<section class="diff" id="diferencia">
+  <div class="wrap">
+    <span class="tag"><i></i>Qué nos diferencia</span>
+    <h2 class="h2" style="margin-top:18px;max-width:18ch">No somos otra agencia que te cobra por publicar.</h2>
+    <div class="d-grid">
+      <div class="dcard"><span class="k">3 · 7 · 15</span><h3>Días, no meses</h3><p>Web en 3 días, marca en 7 y vendedor digital en 15 como máximo. Lo dejamos por escrito.</p></div>
+      <div class="dcard"><span class="k">IA</span><h3>Inteligencia artificial en todo</h3><p>Usamos IA para responder, llamar, producir y medir. Por eso hacemos en días lo que otros hacen en semanas.</p></div>
+      <div class="dcard"><span class="k">$ fijo</span><h3>Precio fijo cada mes</h3><p>Sabes cuánto pagas desde el primer día. Sin cobros por hora ni sorpresas en la factura.</p></div>
+      <div class="dcard"><span class="k">Tuyo</span><h3>Tus cuentas son tuyas</h3><p>La línea de WhatsApp, la cuenta de Meta y tu web quedan a tu nombre. Nosotros entramos como colaboradores.</p></div>
+      <div class="dcard"><span class="k">7 días</span><h3>Revisión humana</h3><p>Ningún vendedor digital sale solo sin un piloto de 7 días donde revisamos cada conversación.</p></div>
+      <div class="dcard"><span class="k">Ley</span><h3>Datos y horarios en regla</h3><p>Autorización de datos según la Ley 1581 y mensajes o llamadas solo en los horarios de la Ley 2300.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="steps" id="como">
+  <div class="wrap">
+    <span class="tag">Cómo funciona</span>
+    <h2 class="h2" style="margin-top:18px;max-width:16ch">De tu primer chat a vender solo, en cuatro pasos.</h2>
+    <div class="s-grid">
+      <div class="step"><div class="step-face" data-face data-fc="#F4A259" data-fbg="#FFEACB" data-emotion="surprised"></div><small>Paso 1</small><h3>Te miramos</h3><p>Le escribimos a tu WhatsApp de noche, como un cliente más, y medimos cuánto tardas en contestar. Ese es tu punto de partida.</p></div>
+      <div class="step"><div class="step-face" data-face data-fc="#2F6497" data-fbg="#DCEEF8" data-emotion="thinking"></div><small>Paso 2</small><h3>Lo entrenamos</h3><p>Cargamos tu catálogo, precios, horarios y la forma en que le hablas a tus clientes.</p></div>
+      <div class="step"><div class="step-face" data-face data-fc="#FF5A5F" data-fbg="#FFD3D8" data-emotion="nervous"></div><small>Paso 3</small><h3>Piloto de 7 días</h3><p>Miró contesta y alguien del equipo revisa cada conversación. Solo lo soltamos cuando responde como tú.</p></div>
+      <div class="step"><div class="step-face" data-face data-fc="#2E9461" data-fbg="#D8F2E2" data-emotion="happy"></div><small>Paso 4</small><h3>Vende solo</h3><p>Queda trabajando día y noche. Cada semana te contamos qué preguntaron tus clientes y qué se vendió.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="trusted" id="portafolio">
+  <div class="wrap" style="display:block">
+    <span class="tag"><i></i>Lo que hemos hecho</span>
+    <h2 class="h2" style="margin:18px 0 clamp(30px,4vw,56px);max-width:16ch">Cinco frentes, una misma máquina.</h2>
+    <div class="port-grid">
+      <div class="ptile" style="--pc:#2E9461;--pl:#D8F2E2"><div class="pf" data-face data-fc="#2E9461" data-fbg="#FFFFFF" data-emotion="happy"></div><h3>Material para redes</h3><p>Piezas, reels y carruseles con gancho desde el primer segundo.</p><small>Casos en preparación</small></div>
+      <div class="ptile" style="--pc:#FF5A5F;--pl:#FFD3D8"><div class="pf" data-face data-fc="#FF5A5F" data-fbg="#FFFFFF" data-emotion="surprised"></div><h3>Resultados de anuncios</h3><p>Campañas en Meta y Google medidas en ventas, no en likes.</p><small>Casos en preparación</small></div>
+      <div class="ptile" style="--pc:#6C3BCB;--pl:#E6DCFB"><div class="pf" data-face data-fc="#6C3BCB" data-fbg="#FFFFFF" data-emotion="smirk"></div><h3>Marcas diseñadas</h3><p>Logo, colores, tipografía y voz con un sistema que se sostiene.</p><small>Casos en preparación</small></div>
+      <div class="ptile" style="--pc:#2F6497;--pl:#DCEEF8"><div class="pf" data-face data-fc="#2F6497" data-fbg="#FFFFFF" data-emotion="thinking"></div><h3>Webs desarrolladas</h3><p>Páginas rápidas, con asistente IA y botón directo a WhatsApp.</p><small>Casos en preparación</small></div>
+      <div class="ptile" style="--pc:#F4A259;--pl:#FFEACB"><div class="pf" data-face data-fc="#F4A259" data-fbg="#FFFFFF" data-emotion="wink"></div><h3>Bots y vendedores</h3><p>Asistentes que responden, agendan y cierran por WhatsApp.</p><small>Casos en preparación</small></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:24px"><span class="tag"><i></i>Marcas con las que hemos trabajado</span><p class="note">Casos completos muy pronto</p></div>
+  </div>
+  <div class="mq" aria-label="Bruder, Alitas Colombianas, MinTIC, Vitalia, Varietale"><div class="mq-in" id="mqIn"></div></div>
+</section>
+
+<section class="final" id="contacto">
+  <div class="wrap">
+    <div>
+      <h2>Tu próximo cliente ya te está escribiendo. ¿Quién le va a contestar?</h2>
+      <p class="lead">Cuéntanos qué vendes y te mostramos a Miró funcionando con tu negocio, en una llamada corta.</p>
+      <a href="#contacto" class="btn btn-w" id="waBtn">Escríbenos por WhatsApp</a>
+      <p class="wa-note" id="waNote" aria-live="polite"></p>
+    </div>
+    <div class="final-face" data-face data-fc="#1B1B1B" data-fbg="#FFFFFF" data-emotion="wink"></div>
+  </div>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <div class="lockup"><b>MIRÒ</b><span>Grupo<br>Empresarial</span></div>
+        <div class="subs"><span><b>miroagencia.com</b></span><span>paginasweb.miroagencia.com</span><span>eventos.miroagencia.com</span><span>capacitaciones.miroagencia.com</span></div>
+      </div>
+      <p>Instagram · Bogotá, Colombia · © 2026</p>
+    </div>
+  </div>
+</section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/MorphSVGPlugin.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+<script>
+(function(){
+  // Número de WhatsApp de Miró (solo dígitos, con indicativo, ej. 573001234567). Vacío = aún no conectado.
+  const WHATSAPP = '';
+
+  const $ = (s, c=document) => c.querySelector(s);
+  const $$ = (s, c=document) => Array.from(c.querySelectorAll(s));
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const hasGsap = !!window.gsap;
+  if(hasGsap) gsap.registerPlugin(ScrollTrigger, MorphSVGPlugin, SplitText);
+
+  /* ================== CARITAS QUE MIRAN ================== */
+  const MOUTH = {
+    neutral:'M48,88 L72,88',
+    happy:'M44,84 Q60,98 76,84',
+    sad:'M44,94 Q60,80 76,94',
+    nervous:'M42,90 L47,85 L52,90 L57,85 L62,90 L67,85 L72,90 L77,85',
+    surprised:'M60,84 C64,84 66,87 66,90 C66,93 64,96 60,96 C56,96 54,93 54,90 C54,87 56,84 60,84 Z',
+    smirk:'M48,90 Q66,96 78,82',
+    thinking:'M50,90 Q60,86 72,90',
+    wink:'M46,84 Q62,98 78,82'
+  };
+  // [rotación ceja izq, desplazamiento, rotación ceja der, desplazamiento]
+  const BROW = {
+    neutral:[0,0,22,0], happy:[0,0,22,0], sad:[-18,3,18,3], nervous:[0,-4,0,-4],
+    surprised:[0,-8,0,-8], smirk:[-16,-4,22,0], thinking:[12,0,-14,-5], wink:[-10,-3,22,2]
+  };
+  const faces = [];
+  function makeFace(host){
+    const fc = host.dataset.fc || '#1B1B1B', fbg = host.dataset.fbg || 'transparent';
+    host.innerHTML = `<svg class="face" viewBox="0 0 120 116" aria-hidden="true" style="--fc:${fc};--fbg:${fbg}">
+      <circle class="f-bg" cx="60" cy="58" r="58"/>
+      <g class="eyes">
+        <rect class="eye eyeL" x="22" y="34" width="32" height="38" rx="11"/>
+        <rect class="eye eyeR" x="66" y="34" width="32" height="38" rx="11"/>
+        <circle class="pupil pL" cx="38" cy="53" r="5.5"/>
+        <circle class="pupil pR" cx="82" cy="53" r="5.5"/>
+      </g>
+      <path class="brow bL" d="M26,22 L50,22"/>
+      <path class="brow bR" d="M70,22 L94,22"/>
+      <path class="mouth" d="${MOUTH.neutral}"/>
+    </svg>`;
+    const svg = host.firstElementChild;
+    const f = {host, svg, pL:svg.querySelector('.pL'), pR:svg.querySelector('.pR'), bL:svg.querySelector('.bL'), bR:svg.querySelector('.bR'),
+      mouth:svg.querySelector('.mouth'), eyeR:svg.querySelector('.eyeR'), eyes:svg.querySelector('.eyes'), x:0, y:0, emotion:null, isStatic: host.hasAttribute('data-static'), lookOverride:null};
+    faces.push(f);
+    setEmotion(f, host.dataset.emotion || 'neutral', true);
+    return f;
+  }
+  function setEmotion(f, e, instant){
+    if(!f || f.emotion === e) return;
+    f.emotion = e;
+    const b = BROW[e] || BROW.neutral, d = instant || !hasGsap || reduce ? 0 : .45;
+    if(!hasGsap){ f.mouth.setAttribute('d', MOUTH[e]); return; }
+    gsap.to(f.bL, {rotation:b[0], y:b[1], svgOrigin:'38 22', duration:d, ease:'back.out(2)'});
+    gsap.to(f.bR, {rotation:b[2], y:b[3], svgOrigin:'82 22', duration:d, ease:'back.out(2)'});
+    gsap.to(f.mouth, {morphSVG:MOUTH[e], duration:d, ease:'back.out(1.6)'});
+    gsap.to(f.eyeR, {scaleY: e === 'wink' ? .12 : 1, svgOrigin:'82 53', duration:d*.6});
+    gsap.to(f.pR, {opacity: e === 'wink' ? 0 : 1, duration:d*.4});
+  }
+  // catálogo completo (se pinta antes de crear las caritas)
+  const SERVICES = [
+    {n:'Vendedor digital IA', d:'Tu WhatsApp responde, agenda y cierra ventas las 24 horas.', t:'15 días máx.', pay:'Mensual', need:['vender'], c:'#6C3BCB', l:'#E6DCFB', e:'smirk', flag:'Empieza aquí'},
+    {n:'Web + asistente IA', d:'Tu página lista con un asistente que atiende y lleva al cliente a WhatsApp.', t:'3 días', pay:'Único + mantenimiento', need:['vender','pro'], c:'#2F6497', l:'#DCEEF8', e:'happy', flag:'Empieza aquí'},
+    {n:'Recordatorios de voz IA', d:'Llamadas que confirman citas, eventos y pagos sin que levantes el teléfono.', t:'7 días', pay:'Mensual', need:['vender','evento','cuentas'], c:'#F4A259', l:'#FFEACB', e:'surprised'},
+    {n:'Administración de anuncios', d:'Pauta en Meta y Google que lleva clientes directo a tu chat.', t:'Continuo', pay:'Mensual', need:['vender'], c:'#FF5A5F', l:'#FFD3D8', e:'happy'},
+    {n:'Creación de contenido', d:'Piezas, reels y carruseles con gancho, producidos por ciclos.', t:'Ciclos de 15 días', pay:'Mensual', need:['vender','pro'], c:'#2E9461', l:'#D8F2E2', e:'smirk'},
+    {n:'Branding', d:'Logo, colores y tipografía con reglas claras para usarlos bien.', t:'7 días', pay:'Pago único', need:['pro'], c:'#6C3BCB', l:'#E6DCFB', e:'wink'},
+    {n:'Marcas con IA', d:'Tu marca creada y potenciada con inteligencia artificial, lista para salir a redes.', t:'15 días', pay:'Pago único', need:['pro'], c:'#2F6497', l:'#DCEEF8', e:'thinking'},
+    {n:'Perfil digital', d:'Google, Instagram y Facebook completos y bien configurados para que te encuentren.', t:'2 a 3 días', pay:'Pago único', need:['pro','vender'], c:'#2E9461', l:'#D8F2E2', e:'happy'},
+    {n:'Eventos', d:'Sistema antes, durante y después del evento, con activaciones incluidas.', t:'Según el evento', pay:'Por proyecto', need:['evento'], c:'#FF5A5F', l:'#FFD3D8', e:'surprised'},
+    {n:'Capacitaciones digitales', d:'Talleres prácticos para tu equipo: redes, pauta e inteligencia artificial.', t:'1 día', pay:'Por taller', need:['aprender'], c:'#F4A259', l:'#FFEACB', e:'thinking'},
+    {n:'Contabilidad automatizada', d:'Para conjuntos residenciales: cartera, cobros por WhatsApp y reportes claros para la asamblea.', t:'15 días', pay:'Mensual', need:['cuentas'], c:'#1B1B1B', l:'#E7E7E7', e:'nervous', flag:'Muy pronto', soon:true}
+  ];
+  $('#catGrid').innerHTML = SERVICES.map(v => `<article class="svc" data-need="${v.need.join(' ')}" style="--sc:${v.c}">
+    ${v.flag ? `<span class="flag${v.soon ? ' soon' : ''}">${v.flag}</span>` : ''}
+    <div class="svc-face" data-face data-fc="${v.c}" data-fbg="${v.l}" data-emotion="${v.e}"></div>
+    <h3>${v.n}</h3><p>${v.d}</p>
+    <div class="meta"><span class="days">${v.t}</span><span>${v.pay}</span></div></article>`).join('');
+  $('#wave').innerHTML = '<i></i>'.repeat(36);
+
+  $$('[data-face]').forEach(makeFace);
+  const faceOf = el => faces.find(f => f.host === el);
+
+  // los ojos siguen al cursor (o pasean solos si no hay cursor)
+  const ptr = {x:innerWidth/2, y:innerHeight/3, t:-1e9};
+  addEventListener('pointermove', e => { ptr.x = e.clientX; ptr.y = e.clientY; ptr.t = performance.now(); }, {passive:true});
+  function eyesTick(){
+    const now = performance.now(), idle = now - ptr.t > 4000;
+    for(const f of faces){
+      if(f.isStatic) continue;
+      const r = f.svg.getBoundingClientRect();
+      if(r.bottom < -50 || r.top > innerHeight + 50) continue;
+      let tx, ty;
+      if(f.lookOverride){ tx = f.lookOverride[0]; ty = f.lookOverride[1]; }
+      else if(idle){ const k = now/1000 + r.left*.01; tx = Math.sin(k*.7)*6; ty = Math.cos(k*.9)*5; }
+      else {
+        const cx = r.left + r.width/2, cy = r.top + r.height*.46;
+        const dx = ptr.x - cx, dy = ptr.y - cy, dist = Math.hypot(dx, dy) || 1, k = Math.min(1, dist/220);
+        tx = dx/dist*7*k; ty = dy/dist*9*k;
+      }
+      f.x += (tx - f.x)*.18; f.y += (ty - f.y)*.18;
+      f.pL.setAttribute('transform', `translate(${f.x.toFixed(2)} ${f.y.toFixed(2)})`);
+      f.pR.setAttribute('transform', `translate(${f.x.toFixed(2)} ${f.y.toFixed(2)})`);
+    }
+    requestAnimationFrame(eyesTick);
+  }
+  requestAnimationFrame(eyesTick);
+  // parpadeo
+  if(hasGsap && !reduce){
+    const blink = () => {
+      const vis = faces.filter(f => { const r = f.svg.getBoundingClientRect(); return r.bottom > 0 && r.top < innerHeight && f.emotion !== 'wink'; });
+      if(vis.length){ const f = vis[Math.floor(Math.random()*vis.length)]; gsap.fromTo(f.eyes, {scaleY:1}, {scaleY:.08, svgOrigin:'60 53', duration:.07, yoyo:true, repeat:1, ease:'power1.in'}); }
+      setTimeout(blink, 900 + Math.random()*1800);
+    };
+    setTimeout(blink, 1500);
+  }
+
+  /* ================== NAV ================== */
+  const nav = $('#nav');
+  addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 8), {passive:true});
+
+  /* ================== DEMO DE CHAT ================== */
+  const BIZ = [
+    {id:'rest', label:'Restaurante', name:'Tu restaurante',
+      info:'Restaurante de comida colombiana en Chapinero, Bogotá. Horario: todos los días de 12 m. a 10 p. m. Domicilios a 3 km por $5.000. Platos: bandeja paisa $32.000, ajiaco $28.000, alitas x12 $34.000, limonada de coco $9.000. Reservas para grupos de hasta 20 personas. Pagos: efectivo, tarjeta, Nequi y Daviplata.',
+      sugg:['¿Tienen domicilio?','¿Cuánto vale la bandeja paisa?','Quiero reservar para 8 el sábado']},
+    {id:'pelu', label:'Peluquería', name:'Tu peluquería',
+      info:'Peluquería en Usaquén, Bogotá. Martes a sábado de 9 a. m. a 7 p. m. Corte de dama $45.000, corte de caballero $30.000, color desde $120.000, keratina desde $180.000, manicure $25.000. Las citas se agendan con nombre, servicio y hora. Hay cupos mañana a las 10 a. m., 2 p. m. y 5 p. m.',
+      sugg:['¿Tienen cita para mañana?','¿Cuánto cuesta la keratina?','¿Abren el domingo?']},
+    {id:'tienda', label:'Tienda de ropa', name:'Tu tienda',
+      info:'Tienda de ropa en línea con envíos a toda Colombia en 2 a 4 días hábiles. Envío gratis desde $150.000; si no, $12.000. Jeans $119.000, camisetas $49.000, chaquetas $189.000. Tallas S a XL. Cambios dentro de 15 días. Pago con link de pago, tarjeta o contraentrega en Bogotá.',
+      sugg:['¿Hacen envíos a Medellín?','¿Tienen el jean en talla M?','¿Puedo pagar contraentrega?']},
+    {id:'inmo', label:'Inmobiliaria', name:'Tu proyecto de vivienda',
+      info:'Proyecto de apartamentos en Mosquera, Cundinamarca. Apartamentos de 2 habitaciones desde 54 m², precio desde $240.000.000. Cuota inicial del 30% diferida a 24 meses. Sala de ventas abierta todos los días de 9 a. m. a 5 p. m. Entrega estimada en diciembre de 2027. Aplica subsidio de caja de compensación.',
+      sugg:['¿Cuánto es la cuota inicial?','Quiero visitar la sala de ventas','¿Aplica subsidio?']}
+  ];
+  const msgs = $('#msgs'), sugg = $('#sugg'), input = $('#msgIn'), demoFace = faceOf($('.demo-face'));
+  let biz = BIZ[0], history = [], busy = false, sample = null, aiMode = 'pending';
+
+  const bizWrap = $('#biz');
+  bizWrap.innerHTML = BIZ.map((b, i) => `<button type="button" data-i="${i}" aria-pressed="${i === 0}">${b.label}</button>`).join('');
+  bizWrap.addEventListener('click', e => {
+    const b = e.target.closest('button'); if(!b || busy) return;
+    biz = BIZ[+b.dataset.i];
+    $$('button', bizWrap).forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    resetChat();
+  });
+
+  const esc = s => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  function bubble(text, who, meta){
+    const d = document.createElement('div');
+    d.className = 'bub ' + who;
+    d.innerHTML = esc(text) + (meta ? `<span class="meta">${esc(meta)}</span>` : '');
+    msgs.appendChild(d);
+    if(hasGsap && !reduce) gsap.fromTo(d, {y:12, opacity:0, scale:.96}, {y:0, opacity:1, scale:1, duration:.35, ease:'back.out(2)', transformOrigin: who === 'me' ? '100% 100%' : '0% 100%'});
+    msgs.scrollTop = msgs.scrollHeight;
+    return d;
+  }
+  function renderSugg(){
+    sugg.innerHTML = biz.sugg.map(s => `<button type="button">${esc(s)}</button>`).join('');
+  }
+  sugg.addEventListener('click', e => { const b = e.target.closest('button'); if(b) send(b.textContent); });
+  function resetChat(){
+    msgs.innerHTML = ''; history = [];
+    $('#bizName').textContent = biz.name;
+    bubble(`¡Hola! Soy Miró, el vendedor digital de ${biz.name.toLowerCase()}. Escríbeme lo que te preguntaría un cliente y mira qué tan rápido respondo.`, 'them');
+    renderSugg();
+    setEmotion(demoFace, 'happy');
+  }
+
+  // respuestas de respaldo, por si la IA no está disponible
+  function fallback(text){
+    const t = text.toLowerCase();
+    const R = {
+      rest:[[/domicil|envi|llev/, 'Sí, tenemos domicilio a 3 km por $5.000 y llega en unos 40 minutos. ¿Me compartes tu dirección para tomarte el pedido?'],
+            [/cuest|vale|precio|cuánto|cuanto/, 'La bandeja paisa vale $32.000 y el ajiaco $28.000. ¿Te separo uno para domicilio o para recoger?'],
+            [/reserv|mesa|personas|sábado|sabado/, 'Claro, recibimos grupos de hasta 20 personas. ¿A qué hora te sirve y a nombre de quién dejo la reserva?'],
+            [/hora|abren|abierto/, 'Abrimos todos los días de 12 m. a 10 p. m. ¿Quieres que te reserve una mesa?'],
+            [/nequi|pago|tarjeta|daviplata/, 'Recibimos efectivo, tarjeta, Nequi y Daviplata. ¿Te tomo el pedido de una vez?']],
+      pelu:[[/cita|mañana|agend|turno/, 'Mañana tengo cupo a las 10 a. m., 2 p. m. y 5 p. m. ¿Cuál te separo y para qué servicio?'],
+            [/keratin|color|tinte|cuest|vale|precio|cuánto|cuanto/, 'La keratina va desde $180.000 y el color desde $120.000, según el largo. ¿Te agendo una valoración sin costo?'],
+            [/domingo|abren|hora|lunes/, 'Atendemos de martes a sábado, de 9 a. m. a 7 p. m. ¿Te reservo un espacio el sábado?']],
+      tienda:[[/envi|medell|cali|barranq|llega/, 'Sí, enviamos a toda Colombia y llega en 2 a 4 días hábiles; desde $150.000 el envío es gratis. ¿Te paso el link de pago?'],
+            [/talla|jean|camis|chaquet/, 'El jean está disponible de la S a la XL y vale $119.000. ¿Te lo separo en talla M?'],
+            [/contraentrega|pago|tarjeta|link/, 'En Bogotá puedes pagar contraentrega; para el resto del país te envío un link de pago. ¿A qué ciudad lo mandamos?']],
+      inmo:[[/inicial|cuota|financ/, 'La cuota inicial es del 30% y la puedes diferir a 24 meses. ¿Quieres que te haga la simulación con tu presupuesto?'],
+            [/visit|sala|conocer|ir/, 'La sala de ventas abre todos los días de 9 a. m. a 5 p. m. ¿Qué día te agendo la visita?'],
+            [/subsid|caja/, 'Sí, el proyecto aplica para subsidio de caja de compensación. ¿Con qué caja estás afiliado?']]
+    }[biz.id];
+    for(const [re, ans] of R) if(re.test(t)) return ans;
+    return 'Buena pregunta. Te confirmo ese dato con el equipo en un momento y mientras tanto, ¿te ayudo a dejar tu pedido o cita separados?';
+  }
+
+  if(window.claude && typeof window.claude.use === 'function'){
+    window.claude.use('sample').then(s => { sample = s; aiMode = s ? 'ai' : 'fallback'; }).catch(() => { aiMode = 'fallback'; });
+  } else aiMode = 'fallback';
+
+  const instructions = () => `Eres Miró, el vendedor digital por WhatsApp de este negocio de demostración: ${biz.info}
+Reglas: responde en español de Colombia, cálido y directo, como un buen vendedor por chat. Máximo dos frases cortas. Sin emojis, sin markdown, sin listas. Usa solo los datos del negocio; si no tienes un dato, dilo con naturalidad y ofrece pasar con una persona del equipo. Termina siempre con una pregunta o un siguiente paso concreto (separar, reservar, agendar, pedir dirección o enviar link de pago). Si te preguntan qué eres, di que eres Miró, un vendedor digital con IA.`;
+
+  async function send(text){
+    text = (text || '').trim();
+    if(!text || busy) return;
+    busy = true; input.value = '';
+    bubble(text, 'me');
+    history.push({role:'user', content:text});
+    setEmotion(demoFace, 'thinking');
+    demoFace.lookOverride = [5, -7];
+    const typing = document.createElement('div'); typing.className = 'typing'; typing.innerHTML = '<i></i><i></i><i></i>';
+    msgs.appendChild(typing); msgs.scrollTop = msgs.scrollHeight;
+    if(hasGsap) gsap.to(typing.children, {y:-4, duration:.3, stagger:.12, repeat:-1, yoyo:true, ease:'sine.inOut'});
+    const t0 = performance.now();
+    let answer = '';
+    if(aiMode === 'ai' && sample){
+      try {
+        const conv = history.map((m, i) => i === 0 ? {role:'user', content: instructions() + '\n\nMensaje del cliente: ' + m.content} : m);
+        const res = await sample(conv, {modelTier:'quick', cache:false});
+        answer = (res && res.text ? res.text : '').trim();
+      } catch(err){
+        if(err && err.code === 'not_granted') aiMode = 'fallback';
+        answer = '';
+      }
+    }
+    if(!answer){
+      answer = fallback(text);
+      const wait = 700 + Math.random()*900 - (performance.now() - t0);
+      if(wait > 0) await new Promise(r => setTimeout(r, wait));
+    }
+    const secs = ((performance.now() - t0)/1000).toFixed(1).replace('.', ',');
+    typing.remove();
+    history.push({role:'assistant', content:answer});
+    bubble(answer, 'them', `Miró · respondió en ${secs} s`);
+    demoFace.lookOverride = null;
+    setEmotion(demoFace, 'happy');
+    if(hasGsap && !reduce) gsap.fromTo(demoFace.svg, {y:0}, {y:-10, duration:.18, yoyo:true, repeat:1, ease:'power2.out'});
+    $('#demoCap').textContent = aiMode === 'ai' ? 'Respuestas generadas con IA en vivo para un negocio de ejemplo. Tus datos no se guardan.' : 'Demo con respuestas de ejemplo para un negocio ficticio.';
+    busy = false;
+  }
+  $('#compose').addEventListener('submit', e => { e.preventDefault(); send(input.value); });
+  input.addEventListener('focus', () => { setEmotion(demoFace, 'surprised'); demoFace.lookOverride = [0, 9]; });
+  input.addEventListener('blur', () => { if(!busy){ demoFace.lookOverride = null; setEmotion(demoFace, 'happy'); } });
+  input.addEventListener('input', () => { if(!busy) setEmotion(demoFace, input.value ? 'smirk' : 'surprised'); });
+  resetChat();
+
+  /* ================== LA NOCHE (scroll) ================== */
+  const NIGHT = [
+    ['7:12','p. m.','Laura','¿Tienen domicilio hasta Cedritos?','#FFD3D8'],
+    ['7:48','p. m.','Andrés','Buenas, ¿cuánto vale la bandeja?','#DCEEF8'],
+    ['8:30','p. m.','Carolina','¿Abren mañana temprano?','#FFEACB'],
+    ['9:05','p. m.','Camila','¿Puedo reservar para 8 el sábado?','#E6DCFB'],
+    ['9:47','p. m.','Jorge','¿Aceptan Nequi?','#D8F2E2'],
+    ['10:20','p. m.','Sofía','Hola, ¿siguen atendiendo?','#FFD3D8'],
+    ['11:02','p. m.','Mateo','Quiero hacer un pedido grande para mañana','#DCEEF8'],
+    ['11:58','p. m.','Valentina','¿Tienen opciones vegetarianas?','#FFEACB'],
+    ['12:41','a. m.','Daniel','¿Hola?','#E6DCFB'],
+    ['1:30','a. m.','Paula','Bueno, ya pedí en otro lado','#D8F2E2'],
+    ['5:52','a. m.','Felipe','¿A qué hora abren hoy?','#FFD3D8']
+  ];
+  const nlist = $('#nlist');
+  nlist.innerHTML = NIGHT.map(([h, ap, n, m, c]) => `<div class="nmsg"><span class="av" style="background:${c}">${n[0]}</span><div><b>${n}</b><p>${esc(m)}</p></div><time>${h} ${ap}</time><span class="ok">✓✓ Miró respondió en 3 s</span></div>`).join('');
+  const nmsgs = $$('.nmsg', nlist);
+  const nightFace = faceOf($('#nightFace'));
+  const lostAt = [5, 7, 9]; // índices donde el cliente se fue con otro
+  const STORY = [
+    [0, 'Cierras el local y te vas a descansar.'],
+    [.12, 'Pero tus clientes siguen escribiendo.'],
+    [.3, 'A las 9:47 p. m. ya van cinco sin respuesta.'],
+    [.45, 'Pasada la medianoche, empiezan a irse.'],
+    [.58, 'A las 6 a. m. contestas once chats fríos.'],
+    [.68, 'Ahora la misma noche, con Miró prendido.'],
+    [.86, 'Cada cliente atendido en segundos. Tú dormiste.']
+  ];
+  function setNight(p){
+    // fase 1: la noche sin Miró (0 a .62) · fase 2: con Miró (.66 a 1)
+    const p1 = Math.min(1, p/.62);
+    const shown = Math.round(p1*NIGHT.length);
+    nmsgs.forEach((m, i) => { m.style.display = i < shown ? '' : 'none'; });
+    const last = NIGHT[Math.max(0, shown - 1)];
+    if(shown === 0){ $('#clk').textContent = '7:00'; $('#ampm').textContent = 'p. m.'; }
+    else if(p < .62){ $('#clk').textContent = last[0]; $('#ampm').textContent = last[1]; }
+    const on = p >= .66;
+    const doneN = on ? Math.min(NIGHT.length, Math.round(((p - .66)/.24)*NIGHT.length)) : 0;
+    if(p >= .62 && !on){ $('#clk').textContent = '6:00'; $('#ampm').textContent = 'a. m.'; }
+    if(on){ const t = doneN ? NIGHT[doneN - 1] : ['7:00','p. m.']; $('#clk').textContent = t[0]; $('#ampm').textContent = t[1]; }
+    nmsgs.forEach((m, i) => m.classList.toggle('done', i < doneN));
+    $('#badge').textContent = on ? Math.max(0, NIGHT.length - doneN) : shown;
+    const lost = lostAt.filter(i => i < shown).length + (p1 >= 1 ? 1 : 0);
+    if(!on){
+      $('#c1v').textContent = shown; $('#c1l').textContent = 'mensajes sin responder';
+      $('#c2v').textContent = lost; $('#c2l').textContent = 'clientes que le compraron a otro';
+      $('#c1').className = 'cnt bad'; $('#c2').className = 'cnt bad';
+    } else {
+      $('#c1v').textContent = doneN + '/11'; $('#c1l').textContent = 'mensajes respondidos';
+      $('#c2v').textContent = Math.round(doneN*5/11); $('#c2l').textContent = 'pedidos y reservas cerrados';
+      $('#c1').className = 'cnt good'; $('#c2').className = 'cnt good';
+    }
+    $('#togL').textContent = on ? 'Miró prendido' : 'Miró apagado';
+    if(hasGsap){
+      gsap.to('#tog', {x: on ? 28 : 0, backgroundColor: on ? '#FF2D2D' : '#FFFFFF', duration:.3, overwrite:true});
+      gsap.to('.toggle', {backgroundColor: on ? 'rgba(255,255,255,.95)' : 'rgba(255,255,255,.18)', duration:.3, overwrite:true});
+    }
+    let s = STORY[0][1]; for(const [k, t] of STORY) if(p >= k) s = t;
+    if($('#story').textContent !== s) $('#story').textContent = s;
+    const e = on ? (p > .9 ? 'smirk' : 'happy') : p < .12 ? 'neutral' : p < .3 ? 'surprised' : p < .45 ? 'nervous' : 'sad';
+    setEmotion(nightFace, e);
+  }
+  setNight(0);
+  if(hasGsap){
+    const mm = gsap.matchMedia();
+    mm.add('(min-width: 0px)', () => {
+      ScrollTrigger.create({trigger:'#noche', start:'top top', end:'+=320%', pin:'.night-pin', scrub:true,
+        onUpdate: s => setNight(s.progress)});
+    });
+  }
+
+  /* ================== CALCULADORA ================== */
+  const money = v => '$' + Math.round(v).toLocaleString('es-CO');
+  const calcFace = faceOf($('#calcFace'));
+  const sl = {chats:$('#sChats'), late:$('#sLate'), ticket:$('#sTicket'), close:$('#sClose')};
+  const lossObj = {v:0};
+  function calc(){
+    Object.values(sl).forEach(i => i.style.setProperty('--p', ((i.value - i.min)/(i.max - i.min)*100) + '%'));
+    const chats = +sl.chats.value, late = +sl.late.value/100, ticket = +sl.ticket.value, close = +sl.close.value/10;
+    $('#oChats').textContent = chats;
+    $('#oLate').textContent = Math.round(late*100) + '%';
+    $('#oTicket').textContent = money(ticket);
+    $('#oClose').textContent = sl.close.value + ' de 10';
+    const loss = chats*30*late*close*ticket;
+    const pay = Math.max(1, Math.ceil(600000/ticket));
+    $('#payback').textContent = pay + (pay === 1 ? ' venta' : ' ventas');
+    if(hasGsap && !reduce) gsap.to(lossObj, {v:loss, duration:.5, ease:'power3.out', overwrite:true, onUpdate:() => $('#loss').textContent = money(lossObj.v)});
+    else $('#loss').textContent = money(loss);
+    setEmotion(calcFace, loss > 6000000 ? 'nervous' : loss > 1500000 ? 'sad' : loss > 600000 ? 'surprised' : 'neutral');
+  }
+  Object.values(sl).forEach(i => i.addEventListener('input', calc));
+  calc();
+
+  /* ================== MARQUESINA DE MARCAS ================== */
+  const BR = [['Bruder','#FF5A5F','#FFD3D8','happy'],['Alitas Colombianas','#F4A259','#FFEACB','smirk'],['MinTIC','#2F6497','#DCEEF8','surprised'],['Vitalia','#2E9461','#D8F2E2','happy'],['Varietale','#6C3BCB','#E6DCFB','wink']];
+  const mq = $('#mqIn');
+  const one = BR.map(([n, c, l, e]) => `<span>${n}<span class="mf" data-face data-fc="${c}" data-fbg="${l}" data-emotion="${e}"></span></span>`).join('');
+  mq.innerHTML = one + one;
+  $$('[data-face]', mq).forEach(makeFace);
+  if(hasGsap && !reduce){
+    const tw = gsap.to(mq, {xPercent:-50, duration:36, repeat:-1, ease:'none'});
+    ScrollTrigger.create({trigger:'.trusted', start:'top bottom', end:'bottom top', onUpdate: s => { const v = s.getVelocity(); gsap.to(tw, {timeScale: (s.direction || 1)*(1 + Math.min(Math.abs(v)/300, 5)), duration:.2, overwrite:true}); gsap.to(tw, {timeScale: s.direction || 1, duration:1.2, delay:.25}); }});
+  }
+
+  /* ================== RECORDATORIOS DE VOZ ================== */
+  const VOICE = {
+    cita:'Hola Camila, te habla Miró, de la peluquería. Te recuerdo tu cita de keratina mañana a las diez de la mañana. Si nos confirmas por WhatsApp, te guardamos el espacio.',
+    evento:'Hola Andrés, te habla Miró. Mañana es el lanzamiento y tu entrada ya está lista. Las puertas abren a las seis de la tarde. Si necesitas la ubicación, escríbenos por WhatsApp.',
+    pago:'Hola Diana, te habla Miró, de la administración del conjunto. Te recuerdo que la cuota de este mes vence el viernes. Por WhatsApp te enviamos el enlace de pago.'
+  };
+  let vKey = 'cita', speaking = false, vTimer = null, vStart = 0, wordIdx = 0;
+  const transcript = $('#transcript'), waveBars = $$('#wave i'), callFace = faceOf($('#callFace'));
+  const renderVoice = () => { transcript.innerHTML = VOICE[vKey].split(' ').map(w => `<span>${esc(w)}</span>`).join(' '); };
+  renderVoice();
+  $('#vtabs').addEventListener('click', e => {
+    const b = e.target.closest('button'); if(!b) return;
+    stopVoice(); vKey = b.dataset.v;
+    $$('#vtabs button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    renderVoice();
+  });
+  function stopVoice(){
+    speaking = false; clearInterval(vTimer);
+    try { window.speechSynthesis && speechSynthesis.cancel(); } catch(e){}
+    $('#playVoice').textContent = 'Escuchar el recordatorio';
+    $('#callState').textContent = 'Listo para llamar';
+    setEmotion(callFace, 'happy');
+    waveBars.forEach(b => b.style.height = '14%');
+  }
+  function startVoice(){
+    speaking = true; wordIdx = 0; vStart = performance.now();
+    const words = $$('span', transcript); words.forEach(w => w.classList.remove('on'));
+    $('#playVoice').textContent = 'Colgar';
+    $('#callState').textContent = 'Llamando…';
+    setEmotion(callFace, 'smirk');
+    let boundary = false, voiced = false;
+    try {
+      if(window.speechSynthesis && window.SpeechSynthesisUtterance){
+        const u = new SpeechSynthesisUtterance(VOICE[vKey]);
+        const vs = speechSynthesis.getVoices();
+        u.voice = vs.find(v => /^es[-_]CO/i.test(v.lang)) || vs.find(v => /^es[-_](419|MX|US)/i.test(v.lang)) || vs.find(v => /^es/i.test(v.lang)) || null;
+        u.lang = (u.voice && u.voice.lang) || 'es-CO'; u.rate = 1.02;
+        u.onboundary = ev => { if(ev.name && ev.name !== 'word') return; boundary = true; const upto = VOICE[vKey].slice(0, ev.charIndex).split(' ').length; words.forEach((w, i) => w.classList.toggle('on', i < upto)); };
+        u.onend = () => { words.forEach(w => w.classList.add('on')); setTimeout(stopVoice, 500); };
+        u.onerror = () => {};
+        speechSynthesis.speak(u); voiced = true;
+      }
+    } catch(e){ voiced = false; }
+    if(!voiced) $('#voiceNote').textContent = 'Tu navegador no tiene voz disponible: te mostramos la llamada como texto.';
+    vTimer = setInterval(() => {
+      const t = (performance.now() - vStart)/1000;
+      $('#callTime').textContent = '00:' + String(Math.floor(t)).padStart(2,'0');
+      waveBars.forEach((b, i) => b.style.height = (14 + Math.abs(Math.sin(t*9 + i*.7))*Math.random()*86).toFixed(0) + '%');
+      if(!boundary){ const upto = Math.floor(t/0.36); words.forEach((w, i) => w.classList.toggle('on', i < upto)); if(!voiced && upto > words.length + 2) stopVoice(); }
+    }, 90);
+  }
+  $('#playVoice').addEventListener('click', () => speaking ? stopVoice() : startVoice());
+
+  /* ================== EVENTOS ================== */
+  const STAGES = [
+    {t:'Antes', s:'Antes del evento', d:'Pauta para llenar cupos, inscripción por WhatsApp y recordatorios de voz y mensaje.', e:'surprised',
+      m:[['me','Quiero inscribirme al lanzamiento del sábado'],['them','¡Listo! Ya quedaste inscrito. Te mando la ubicación y un recordatorio el día antes.'],['sys','Recordatorio de voz programado · viernes 6:00 p. m.']]},
+    {t:'Durante', s:'Durante el evento', d:'Check-in, agenda y respuestas en vivo: dónde parquear, a qué hora empieza, qué sigue.', e:'happy',
+      m:[['me','¿Dónde puedo parquear?'],['them','Hay parqueadero gratis en el sótano 2. La charla principal empieza en 15 minutos.'],['sys','Check-in registrado por WhatsApp']]},
+    {t:'Activaciones', s:'Activaciones', d:'Trivias, sorteos y retos por WhatsApp que hacen que la gente participe y comparta.', e:'smirk',
+      m:[['me','¡Quiero entrar al sorteo!'],['them','Responde esta trivia y quedas dentro: ¿en qué año abrió la marca?'],['sys','Sorteo en vivo · participantes sumando']]},
+    {t:'Después', s:'Después del evento', d:'Encuesta, recomendaciones según lo que le interesó a cada asistente y seguimiento para que compre.', e:'wink',
+      m:[['me','Me encantó el evento'],['them','¡Gracias por venir! Por asistir tienes 15% en tu primera compra esta semana. ¿Te mando el catálogo?'],['sys','Encuesta enviada · recomendaciones personalizadas']]}
+  ];
+  const stagesEl = $('#stages'), evMsgs = $('#evMsgs'), evFace = faceOf($('#evFace'));
+  stagesEl.innerHTML = STAGES.map((g, i) => `<button class="stage" role="tab" type="button" data-i="${i}" aria-selected="${i === 0}"><span class="n">${i + 1}</span><b>${g.t}</b><p>${g.d}</p></button>`).join('');
+  let evIdx = 0, evAuto = true, evTimer = null, evInView = false;
+  function showStage(i){
+    evIdx = i; const g = STAGES[i];
+    $$('.stage', stagesEl).forEach((b, k) => b.setAttribute('aria-selected', String(k === i)));
+    $('#evStage').textContent = g.s;
+    evMsgs.innerHTML = '';
+    g.m.forEach(([who, txt], k) => {
+      const d = document.createElement('div');
+      d.className = who === 'sys' ? 'sys' : 'bub ' + who;
+      d.textContent = txt;
+      evMsgs.appendChild(d);
+      if(hasGsap && !reduce) gsap.fromTo(d, {y:14, opacity:0}, {y:0, opacity:1, duration:.4, delay:.15 + k*.45, ease:'back.out(2)'});
+    });
+    setEmotion(evFace, g.e);
+    if(hasGsap && !reduce) gsap.fromTo('#evBar', {width:'0%'}, {width:'100%', duration: evAuto ? 5 : .6, ease:'none'});
+  }
+  function scheduleEv(){ clearTimeout(evTimer); if(evAuto && evInView && !reduce) evTimer = setTimeout(() => { showStage((evIdx + 1) % STAGES.length); scheduleEv(); }, 5000); }
+  stagesEl.addEventListener('click', e => { const b = e.target.closest('.stage'); if(!b) return; evAuto = false; clearTimeout(evTimer); showStage(+b.dataset.i); });
+  stagesEl.addEventListener('keydown', e => {
+    if(e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return; e.preventDefault();
+    evAuto = false; const n = (evIdx + (e.key === 'ArrowDown' ? 1 : -1) + STAGES.length) % STAGES.length; showStage(n); $$('.stage', stagesEl)[n].focus();
+  });
+  showStage(0);
+  if(hasGsap) ScrollTrigger.create({trigger:'#eventos', start:'top 70%', end:'bottom 30%', onToggle: s => { evInView = s.isActive; if(evInView){ if(evAuto) showStage(evIdx); scheduleEv(); } else clearTimeout(evTimer); }});
+
+  /* ================== FILTRO DEL CATÁLOGO ================== */
+  $('#needs').addEventListener('click', e => {
+    const b = e.target.closest('button'); if(!b) return;
+    const need = b.dataset.need;
+    $$('#needs button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    $$('.svc').forEach(card => {
+      const on = need === 'all' || card.dataset.need.split(' ').includes(need);
+      if(hasGsap && !reduce) gsap.to(card, {opacity: on ? 1 : .22, scale: on ? 1 : .96, duration:.35, ease:'power2.out'});
+      else card.style.opacity = on ? 1 : .22;
+      const f = faceOf(card.querySelector('.svc-face')); if(f) setEmotion(f, on ? (need === 'all' ? (f.host.dataset.emotion) : 'happy') : 'sad');
+    });
+  });
+
+  /* ================== WHATSAPP ================== */
+  const wa = $('#waBtn');
+  if(WHATSAPP){
+    wa.href = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent('Hola Miró, quiero ver cómo funcionaría el vendedor digital en mi negocio.')}`;
+    wa.target = '_blank'; wa.rel = 'noopener';
+  } else {
+    wa.addEventListener('click', e => { e.preventDefault(); $('#waNote').textContent = 'Aquí va el número de WhatsApp de Miró. Todavía falta conectarlo.'; });
+  }
+
+  /* ================== ENTRADAS ================== */
+  if(hasGsap && !reduce){
+    const h1 = SplitText.create('.hero h1', {type:'words', mask:'words'});
+    gsap.timeline({delay:.15})
+      .from('.hero .tag', {y:16, opacity:0, duration:.5, ease:'power3.out'})
+      .from(h1.words, {yPercent:110, duration:.8, ease:'expo.out', stagger:.04}, '-=.2')
+      .from('.hero .lead, .hero-ctas, .trust', {y:20, opacity:0, duration:.7, ease:'expo.out', stagger:.08}, '-=.5')
+      .from('.phone', {y:60, opacity:0, rotation:3, duration:1, ease:'expo.out'}, '-=.9')
+      .from('.demo-face', {y:80, scale:.4, opacity:0, duration:.9, ease:'back.out(1.8)'}, '-=.6');
+    $$('.h2').forEach(h => {
+      const s = SplitText.create(h, {type:'words', mask:'words'});
+      gsap.from(s.words, {yPercent:110, duration:.8, ease:'expo.out', stagger:.035, scrollTrigger:{trigger:h, start:'top 85%', once:true}});
+    });
+    gsap.from('.prod', {y:60, opacity:0, duration:.9, ease:'expo.out', stagger:.12, scrollTrigger:{trigger:'.p-grid', start:'top 82%', once:true}});
+    gsap.from('.svc', {y:40, opacity:0, duration:.7, ease:'expo.out', stagger:.05, scrollTrigger:{trigger:'#catGrid', start:'top 85%', once:true}});
+    gsap.from('.dcard', {y:40, opacity:0, duration:.7, ease:'expo.out', stagger:.07, scrollTrigger:{trigger:'.d-grid', start:'top 85%', once:true}});
+    gsap.from('.ptile', {y:40, opacity:0, duration:.7, ease:'expo.out', stagger:.07, scrollTrigger:{trigger:'.port-grid', start:'top 85%', once:true}});
+    gsap.from('.step', {y:50, opacity:0, duration:.8, ease:'expo.out', stagger:.1, scrollTrigger:{trigger:'.s-grid', start:'top 82%', once:true}});
+    gsap.from('.final-face', {scale:.5, rotation:-20, opacity:0, duration:1.1, ease:'back.out(1.6)', scrollTrigger:{trigger:'.final', start:'top 70%', once:true}});
+  }
+})();
+</script>
+</body>
+</html>
