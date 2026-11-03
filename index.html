@@ -303,6 +303,84 @@ button{background:none;border:0;cursor:pointer}
 .subs span{opacity:.85}
 .subs b{font-weight:700}
 
+/* ranking de anuncios */
+.top{list-style:none;display:grid;gap:8px;counter-reset:t}
+.top li{display:grid;grid-template-columns:44px 74px minmax(0,1fr) auto;gap:16px;align-items:center;padding:10px 16px 10px 10px;border-radius:22px;background:var(--gray)}
+.top li:first-child{background:var(--ink);color:var(--white)}
+.top .rk{font-weight:800;font-variation-settings:"wdth" 80;font-size:34px;line-height:1;text-align:center;color:var(--red)}
+.top .th{width:74px;height:74px;border-radius:16px;overflow:hidden;background:var(--tb,#fff);display:grid;place-items:center;cursor:zoom-in}
+.top .th img{width:100%;height:100%;object-fit:cover}
+.top .th img.lg{object-fit:contain;padding:8px}
+.top .tx small{display:block;font-size:12.5px;font-weight:700;opacity:.65}
+.top .tx q{display:block;font-size:clamp(16px,1.4vw,20px);font-weight:700;line-height:1.25;quotes:"“" "”"}
+.top .bar{height:6px;border-radius:3px;background:rgba(27,27,27,.12);margin-top:8px;overflow:hidden}
+.top li:first-child .bar{background:rgba(255,255,255,.18)}
+.top .bar i{display:block;height:100%;background:var(--red);width:var(--w)}
+.top .nm{text-align:right;white-space:nowrap}
+.top .nm b{display:block;font-weight:800;font-variation-settings:"wdth" 82;font-size:clamp(22px,2vw,30px);line-height:1;font-variant-numeric:tabular-nums}
+.top .nm span{font-size:12.5px;opacity:.7}
+@media (max-width:640px){.top li{grid-template-columns:30px 56px minmax(0,1fr);gap:10px}.top .th{width:56px;height:56px}.top .nm{grid-column:2/-1;text-align:left;display:flex;gap:14px;align-items:baseline}.top .nm b{display:inline}.top .rk{font-size:24px}}
+
+/* portafolio real */
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:2px;background:var(--ink);border:2px solid var(--ink);border-radius:28px;overflow:hidden;margin:clamp(28px,4vw,48px) 0 10px}
+.stat{background:var(--white);padding:clamp(18px,2.2vw,28px);display:grid;gap:6px}
+.stat b{font-weight:800;font-variation-settings:"wdth" 80;font-size:clamp(40px,4.6vw,76px);line-height:.9;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.stat:first-child b{color:var(--red)}
+.stat span{font-size:15px;line-height:1.35;color:#444;max-width:22ch}
+.sub-h{display:flex;justify-content:space-between;align-items:flex-end;gap:12px 30px;flex-wrap:wrap;margin:clamp(48px,6vw,88px) 0 22px}
+.sub-h h3{font-weight:800;font-variation-settings:"wdth" 86;font-size:clamp(30px,3.4vw,52px);line-height:.95;letter-spacing:-.02em}
+.cases{display:grid;grid-auto-flow:column;grid-auto-columns:min(86vw,560px);gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:14px;scrollbar-width:thin}
+.case{scroll-snap-align:start;border-radius:30px;overflow:hidden;background:var(--cbg);color:var(--cfg);display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);min-height:440px}
+.case-media{position:relative;display:block;overflow:hidden;cursor:zoom-in}
+.case-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.case-media:hover img{transform:scale(1.06)}
+.case-media .count{position:absolute;left:12px;bottom:12px;padding:6px 12px;border-radius:999px;background:rgba(0,0,0,.6);color:#fff;font-size:12.5px;font-weight:700}
+.case-body{padding:clamp(20px,2.4vw,30px);display:flex;flex-direction:column;gap:14px}
+.case-logo{height:46px;width:auto;max-width:150px;object-fit:contain;align-self:flex-start;border-radius:8px}
+.case-body small{font-size:13px;font-weight:700;letter-spacing:.02em;opacity:.75}
+.case-body h4{font-weight:800;font-variation-settings:"wdth" 86;font-size:clamp(28px,2.6vw,40px);line-height:.95;margin-top:-6px}
+.ck{display:grid;gap:10px}
+.ck div{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:baseline;padding-bottom:10px;border-bottom:1.5px solid color-mix(in srgb,var(--cfg) 18%,transparent)}
+.ck b{font-weight:800;font-variation-settings:"wdth" 82;font-size:clamp(28px,2.6vw,38px);line-height:1;color:var(--cac);font-variant-numeric:tabular-nums}
+.ck span{font-size:14.5px;line-height:1.3;opacity:.85}
+.why{margin-top:auto;font-size:14.5px;line-height:1.45;opacity:.9}
+.why b{color:var(--cac)}
+.src{margin-top:10px}
+.filters{display:grid;gap:10px;margin-bottom:20px}
+.frow{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.frow > span{font-size:13px;font-weight:700;color:var(--muted);margin-right:6px;min-width:70px}
+.frow button{height:38px;padding:0 14px;border-radius:999px;border:1.5px solid var(--line);font-weight:700;font-size:14px;background:var(--white)}
+.frow button[aria-pressed="true"]{background:var(--ink);color:var(--white);border-color:var(--ink)}
+.wall{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
+.tile{position:relative;aspect-ratio:4/5;border-radius:20px;overflow:hidden;background:var(--tl,#E7E7E7);text-align:left;display:flex;flex-direction:column;justify-content:flex-end;isolation:isolate}
+.tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.tile.has-img::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(to top,rgba(0,0,0,.72),rgba(0,0,0,0) 55%)}
+.tile.has-img{color:#fff;cursor:zoom-in}
+.tile:hover img{transform:scale(1.07)}
+.tile .tn{padding:12px;display:grid;gap:4px}
+.tile b{font-size:16px;font-weight:800;line-height:1.1}
+.tile small{font-size:12px;font-weight:600;opacity:.85}
+.tile .tf{position:absolute;top:14px;left:14px;width:56px}
+.tile .tag-case{position:absolute;top:10px;right:10px;padding:4px 9px;border-radius:999px;background:var(--red);color:#fff;font-size:11px;font-weight:800}
+.tile[hidden]{display:none}
+.wall-count{font-size:14px;font-weight:700;color:var(--muted)}
+.lb{position:fixed;inset:0;z-index:100;background:rgba(14,14,14,.92);display:none;align-items:center;justify-content:center;padding:clamp(12px,3vw,40px)}
+.lb.open{display:flex}
+.lb figure{display:grid;gap:12px;justify-items:center;max-width:min(92vw,980px)}
+.lb img{max-width:100%;max-height:78svh;border-radius:16px;object-fit:contain;background:#000}
+.lb figcaption{color:#fff;font-weight:700;text-align:center}
+.lb figcaption small{display:block;font-weight:500;opacity:.7;margin-top:2px}
+.lb button{position:absolute;width:52px;height:52px;border-radius:50%;background:var(--white);color:var(--ink);font-size:22px;font-weight:800;display:grid;place-items:center}
+.lb .lb-x{top:16px;right:16px}
+.lb .lb-p{left:16px;top:50%;margin-top:-26px}
+.lb .lb-n{right:16px;top:50%;margin-top:-26px}
+
+@media (max-width:960px){
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .case{grid-template-columns:minmax(0,1fr);min-height:0}
+  .case-media{aspect-ratio:4/3}
+  .wall{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
 @media (max-width:960px){
   .voice .wrap,.events .wrap{grid-template-columns:minmax(0,1fr)}
   .d-grid{grid-template-columns:minmax(0,1fr)}
@@ -360,7 +438,7 @@ button{background:none;border:0;cursor:pointer}
         <a href="#contacto" class="btn btn-red">Quiero a Miró en mi negocio</a>
         <a href="#calculadora" class="btn btn-line">¿Cuánto estoy perdiendo?</a>
       </div>
-      <p class="trust">Ya confiaron en nosotros: <b>Bruder</b> · <b>Alitas Colombianas</b> · <b>MinTIC</b> · <b>Vitalia</b> · <b>Varietale</b></p>
+      <p class="trust">Más de 50 marcas: <b>Autor</b> · <b>Epicco</b> · <b>G Café</b> · <b>Magic Center</b> · <b>Memo's Pizza</b> · <b>MinTIC</b> · <b>Vitalia</b> · <a href="#portafolio" style="color:var(--red);font-weight:700">ver todas</a></p>
     </div>
 
     <div class="demo" id="demo">
@@ -577,19 +655,43 @@ button{background:none;border:0;cursor:pointer}
 
 <section class="trusted" id="portafolio">
   <div class="wrap" style="display:block">
-    <span class="tag"><i></i>Lo que hemos hecho</span>
-    <h2 class="h2" style="margin:18px 0 clamp(30px,4vw,56px);max-width:16ch">Cinco frentes, una misma máquina.</h2>
-    <div class="port-grid">
-      <div class="ptile" style="--pc:#2E9461;--pl:#D8F2E2"><div class="pf" data-face data-fc="#2E9461" data-fbg="#FFFFFF" data-emotion="happy"></div><h3>Material para redes</h3><p>Piezas, reels y carruseles con gancho desde el primer segundo.</p><small>Casos en preparación</small></div>
-      <div class="ptile" style="--pc:#FF5A5F;--pl:#FFD3D8"><div class="pf" data-face data-fc="#FF5A5F" data-fbg="#FFFFFF" data-emotion="surprised"></div><h3>Resultados de anuncios</h3><p>Campañas en Meta y Google medidas en ventas, no en likes.</p><small>Casos en preparación</small></div>
-      <div class="ptile" style="--pc:#6C3BCB;--pl:#E6DCFB"><div class="pf" data-face data-fc="#6C3BCB" data-fbg="#FFFFFF" data-emotion="smirk"></div><h3>Marcas diseñadas</h3><p>Logo, colores, tipografía y voz con un sistema que se sostiene.</p><small>Casos en preparación</small></div>
-      <div class="ptile" style="--pc:#2F6497;--pl:#DCEEF8"><div class="pf" data-face data-fc="#2F6497" data-fbg="#FFFFFF" data-emotion="thinking"></div><h3>Webs desarrolladas</h3><p>Páginas rápidas, con asistente IA y botón directo a WhatsApp.</p><small>Casos en preparación</small></div>
-      <div class="ptile" style="--pc:#F4A259;--pl:#FFEACB"><div class="pf" data-face data-fc="#F4A259" data-fbg="#FFFFFF" data-emotion="wink"></div><h3>Bots y vendedores</h3><p>Asistentes que responden, agendan y cierran por WhatsApp.</p><small>Casos en preparación</small></div>
+    <span class="tag"><i></i>Portafolio real</span>
+    <h2 class="h2" style="margin-top:18px;max-width:17ch">Más de 50 marcas ya pasaron por la máquina.</h2>
+    <p class="lead" style="margin-top:18px">Restaurantes, clínicas, colegios, tiendas y empresas de Cúcuta, Cartagena y Bogotá. Estas son cifras reales de seis marcas con pauta activa durante un mes.</p>
+    <div class="stats">
+      <div class="stat"><b data-count="2976">0</b><span>personas escribieron por WhatsApp en 60 días</span></div>
+      <div class="stat"><b data-count="3935" data-pre="$">0</b><span>costo promedio de cada conversación</span></div>
+      <div class="stat"><b data-count="1852794">0</b><span>veces se vieron los anuncios</span></div>
+      <div class="stat"><b data-count="935441">0</b><span>reproducciones en Instagram en el último mes</span></div>
     </div>
-    <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:24px"><span class="tag"><i></i>Marcas con las que hemos trabajado</span><p class="note">Casos completos muy pronto</p></div>
+    <p class="note src">Datos de Meta Ads del 22 de agosto al 20 de octubre de 2026, y de Instagram del 21 de septiembre al 20 de octubre · Autor, Epicco, G Café, Memo's Pizza, Tadeo y El Taller de Wato.</p>
+
+    <div class="sub-h"><h3>Los anuncios que más vendieron</h3>
+      <div class="frow" id="topSort" role="group" aria-label="Ordenar anuncios"><button type="button" data-k="cpr" aria-pressed="true">Conversación más barata</button><button type="button" data-k="cv" aria-pressed="false">Más conversaciones</button></div>
+    </div>
+    <ol class="top" id="top"></ol>
+    <p class="note src">Anuncios con al menos 15 conversaciones y una inversión mínima, entre el 22 de agosto y el 20 de octubre de 2026.</p>
+
+    <div class="sub-h"><h3>Casos con resultados</h3><p class="note">Desliza para ver los seis · toca la foto para ver las piezas</p></div>
+    <div class="cases" id="cases"></div>
+
+    <div class="sub-h"><h3>El muro de marcas</h3><span class="wall-count" id="wallCount"></span></div>
+    <div class="filters">
+      <div class="frow" id="fSector" role="group" aria-label="Filtrar por sector"><span>Sector</span></div>
+      <div class="frow" id="fServ" role="group" aria-label="Filtrar por servicio"><span>Servicio</span></div>
+    </div>
+    <div class="wall" id="wall"></div>
+    <p class="note" style="margin-top:14px">Branding, webs y bots: casos en preparación.</p>
   </div>
-  <div class="mq" aria-label="Bruder, Alitas Colombianas, MinTIC, Vitalia, Varietale"><div class="mq-in" id="mqIn"></div></div>
+  <div class="mq" style="margin-top:clamp(40px,6vw,80px)" aria-hidden="true"><div class="mq-in" id="mqIn"></div></div>
 </section>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Galería de piezas">
+  <button class="lb-x" id="lbX" aria-label="Cerrar">✕</button>
+  <button class="lb-p" id="lbP" aria-label="Anterior">←</button>
+  <figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
+  <button class="lb-n" id="lbN" aria-label="Siguiente">→</button>
+</div>
 
 <section class="final" id="contacto">
   <div class="wrap">
@@ -697,6 +799,52 @@ button{background:none;border:0;cursor:pointer}
     <h3>${v.n}</h3><p>${v.d}</p>
     <div class="meta"><span class="days">${v.t}</span><span>${v.pay}</span></div></article>`).join('');
   $('#wave').innerHTML = '<i></i>'.repeat(36);
+
+  // portafolio real
+  const CASES=[{"id": "autor", "name": "Autor", "kind": "Restaurante de autor · Cúcuta", "bg": "#15120E", "fg": "#F5EEE8", "ac": "#C9A85A", "logo": "img/logo-autor.webp", "k": [["382", "personas escribieron por WhatsApp"], ["$3.504", "por cada conversación"], ["276.889", "vistas en Instagram"]], "x": [["75.881", "personas alcanzadas con anuncios"], ["608", "seguidores nuevos"], ["356", "veces compartido"]], "why": "Una persona del equipo contando el menú de almuerzo a cámara. Fue la conversación más barata del mes: $1.865.", "imgs": ["img/case-autor-3.webp", "img/case-autor-1.webp", "img/case-autor-4.webp", "img/case-autor-5.webp"]}, {"id": "epicco", "name": "Epicco", "kind": "Mediterráneo y steakhouse · Cúcuta", "bg": "#2B1513", "fg": "#F3E3D3", "ac": "#D7A26C", "logo": "img/logo-epicco.webp", "k": [["392", "personas escribieron por WhatsApp"], ["+77%", "más conversaciones que el mes anterior"], ["78.994", "personas alcanzadas"]], "x": [["160.499", "vistas en Instagram"], ["402", "seguidores nuevos"], ["$2.403", "la conversación más barata"]], "why": "La mesa servida con amigos alrededor: \"la fuerza de la mesa\" contada en una sola imagen.", "imgs": ["img/case-epicco-2.webp", "img/case-epicco-1.webp", "img/case-epicco-4.webp", "img/case-epicco-3.webp"]}, {"id": "gcafe", "name": "G Café", "kind": "All day café · Cúcuta", "bg": "#E3ECF1", "fg": "#16313F", "ac": "#2C6E8F", "logo": "img/logo-gcafe.webp", "k": [["222", "personas escribieron por WhatsApp"], ["114.297", "vistas en Instagram"], ["272", "seguidores nuevos"]], "x": [["42.281", "personas alcanzadas con anuncios"], ["162", "veces compartido"], ["$2.932", "la conversación más barata"]], "why": "Un antojo concreto con el precio en grande: la arepa de $9.900 fue el anuncio más rentable.", "imgs": ["img/case-gcafe-1.webp", "img/case-gcafe-3.webp", "img/case-gcafe-5.webp", "img/case-gcafe-2.webp"]}, {"id": "memos", "name": "Memo's Pizza", "kind": "Pizzería desde 2007 · Cúcuta", "bg": "#C0281D", "fg": "#FFFFFF", "ac": "#FFD23F", "logo": "img/logo-memos.webp", "k": [["166", "personas escribieron por WhatsApp"], ["134.282", "vistas en Instagram"], ["576", "interacciones en una sola publicación"]], "x": [["369", "seguidores nuevos"], ["266", "comentarios"], ["$2.936", "la conversación más barata"]], "why": "\"Arma tu pizza\": un plan para niños que nadie más ofrece trajo casi un tercio de los mensajes del mes.", "imgs": ["img/case-memos-1.webp", "img/case-memos-5.webp", "img/case-memos-3.webp", "img/case-memos-4.webp"]}, {"id": "tadeo", "name": "Tadeo", "kind": "Chocolatería y brunch · Cúcuta", "bg": "#F4EDE3", "fg": "#3B2A14", "ac": "#A8802F", "logo": "img/logo-tadeo.webp", "k": [["104", "personas escribieron por WhatsApp"], ["59.697", "vistas en Instagram"], ["145", "seguidores nuevos"]], "x": [["16.642", "personas alcanzadas con anuncios"], ["116", "veces compartido"], ["$2.937", "la conversación más barata"]], "why": "El video del lugar, con plantas, luz y el oso de la marca en la pared, fue el mejor anuncio del brunch.", "imgs": ["img/case-tadeo-2.webp", "img/case-tadeo-1.webp", "img/case-tadeo-4.webp", "img/case-tadeo-5.webp"]}, {"id": "wato", "name": "El Taller de Wato", "kind": "Tostadas y brunch · Cúcuta", "bg": "#FFF1E4", "fg": "#1B1B1B", "ac": "#F26B1D", "logo": "img/logo-wato.webp", "k": [["148", "personas escribieron en su primer mes"], ["77.138", "personas alcanzadas"], ["189.777", "vistas en Instagram"]], "x": [["2.449", "visitas al perfil"], ["396", "seguidores nuevos"], ["378", "veces compartido"]], "why": "Arranca con la pregunta de cada mediodía, \"¿ya sabes dónde vas a almorzar?\", y muestra a Wato junto a una persona real.", "imgs": ["img/case-wato-1.webp", "img/case-wato-2.webp", "img/case-wato-3.webp", "img/case-wato-4.webp"]}];
+const BRANDS=[{"n": "Autor", "h": "autor_cucuta", "s": "gastro", "v": ["pauta", "redes"], "c": "autor", "i": ["img/case-autor-3.webp", "img/case-autor-1.webp", "img/case-autor-4.webp", "img/case-autor-5.webp"], "city": "Cúcuta"}, {"n": "Epicco", "h": "epiccorestaurante", "s": "gastro", "v": ["pauta", "redes"], "c": "epicco", "i": ["img/case-epicco-2.webp", "img/case-epicco-1.webp", "img/case-epicco-4.webp", "img/case-epicco-3.webp"], "city": "Cúcuta"}, {"n": "G Café", "h": "g_cafecucuta", "s": "gastro", "v": ["pauta", "redes"], "c": "gcafe", "i": ["img/case-gcafe-1.webp", "img/case-gcafe-3.webp", "img/case-gcafe-5.webp", "img/case-gcafe-2.webp"], "city": "Cúcuta"}, {"n": "Memo's Pizza", "h": "memospizzacucuta", "s": "gastro", "v": ["pauta", "redes"], "c": "memos", "i": ["img/case-memos-1.webp", "img/case-memos-5.webp", "img/case-memos-3.webp", "img/case-memos-4.webp"], "city": "Cúcuta"}, {"n": "Tadeo Chocolatería", "h": "tadeochocolateria", "s": "gastro", "v": ["pauta", "redes"], "c": "tadeo", "i": ["img/case-tadeo-2.webp", "img/case-tadeo-1.webp", "img/case-tadeo-4.webp", "img/case-tadeo-5.webp"], "city": "Cúcuta"}, {"n": "El Taller de Wato", "h": "eltallerdewato", "s": "gastro", "v": ["pauta", "redes"], "c": "wato", "i": ["img/case-wato-1.webp", "img/case-wato-2.webp", "img/case-wato-3.webp", "img/case-wato-4.webp"], "city": "Cúcuta"}, {"n": "Magic Center", "h": "magiccentersg", "s": "salud", "v": ["pauta", "redes"], "c": "", "i": [], "city": "Bogotá"}, {"n": "Oikonomos", "h": "oikonomos.soluciones", "s": "empresa", "v": ["pauta", "redes"], "c": "", "i": [], "city": ""}, {"n": "Create Company", "h": "create_companyfood", "s": "gastro", "v": ["pauta", "redes"], "c": "", "i": [], "city": "Cúcuta"}, {"n": "ProPavers Studio", "h": "", "s": "empresa", "v": ["pauta", "redes"], "c": "", "i": [], "city": ""}, {"n": "Vitalia Wellness Hub", "h": "vitaliawellnesshub", "s": "salud", "v": ["pauta", "redes"], "c": "", "i": [], "city": ""}, {"n": "Surtidora de Confecciones", "h": "surtidoradeconfecciones", "s": "moda", "v": ["redes"], "c": "", "i": ["img/ref-01.webp"], "city": ""}, {"n": "La Faktoria Bistro", "h": "lafaktoriabistro", "s": "gastro", "v": ["redes"], "c": "", "i": ["img/piece-02-1.webp", "img/piece-02-2.webp", "img/ref-02.webp"], "city": ""}, {"n": "Pizza La Faktoria", "h": "pizzalafaktoria", "s": "gastro", "v": ["redes"], "c": "", "i": ["img/ref-03.webp"], "city": ""}, {"n": "Pixeles", "h": "pixeles.co", "s": "empresa", "v": ["redes"], "c": "", "i": ["img/ref-04.webp"], "city": ""}, {"n": "La Fontana", "h": "lafontanatwb", "s": "gastro", "v": ["redes"], "c": "", "i": ["img/ref-05.webp"], "city": ""}, {"n": "Amatai", "h": "amatai.col", "s": "moda", "v": ["redes"], "c": "", "i": ["img/piece-06-1.webp", "img/piece-06-2.webp", "img/piece-06-3.webp", "img/piece-06-4.webp", "img/ref-06.webp"], "city": ""}, {"n": "Corporación IDET", "h": "corporacionidetoficial", "s": "edu", "v": ["redes"], "c": "", "i": ["img/ref-07.webp"], "city": ""}, {"n": "ADPROTAC", "h": "adprotac2017", "s": "empresa", "v": ["redes"], "c": "", "i": ["img/piece-08-1.webp", "img/piece-08-2.webp", "img/piece-08-3.webp", "img/piece-08-4.webp", "img/ref-08.webp"], "city": ""}, {"n": "Academia Le Gourmet", "h": "acalegourmet", "s": "edu", "v": ["redes"], "c": "", "i": ["img/piece-09-1.webp", "img/piece-09-2.webp", "img/piece-09-3.webp", "img/piece-09-4.webp", "img/ref-09.webp"], "city": ""}, {"n": "La Casa del Hojaldre", "h": "casadelhojaldre", "s": "gastro", "v": ["redes"], "c": "", "i": ["img/piece-10-1.webp", "img/piece-10-2.webp", "img/piece-10-3.webp", "img/piece-10-4.webp", "img/ref-10.webp"], "city": ""}, {"n": "Casa Le Gourmet", "h": "casalegourmet", "s": "gastro", "v": ["redes"], "c": "", "i": ["img/piece-11-1.webp", "img/piece-11-2.webp", "img/piece-11-3.webp", "img/piece-11-4.webp", "img/ref-11.webp"], "city": ""}, {"n": "Odontólogo Andrés Viecco", "h": "odontologoandresviecco", "s": "salud", "v": ["redes"], "c": "", "i": ["img/ref-12.webp"], "city": ""}, {"n": "Zona U", "h": "zonaurestaurante", "s": "gastro", "v": ["redes"], "c": "", "i": ["img/piece-13-1.webp", "img/piece-13-2.webp", "img/ref-13.webp"], "city": ""}, {"n": "Two Cola", "h": "twocola", "s": "gastro", "v": ["redes"], "c": "", "i": ["img/piece-14-1.webp", "img/piece-14-2.webp", "img/piece-14-3.webp", "img/piece-14-4.webp", "img/ref-14.webp"], "city": ""}, {"n": "Buni Sabor", "h": "bunisaborctg", "s": "gastro", "v": ["redes"], "c": "", "i": ["img/piece-15-1.webp", "img/piece-15-2.webp", "img/piece-15-3.webp", "img/piece-15-4.webp", "img/ref-15.webp"], "city": ""}, {"n": "Daytona Car Detailing", "h": "daytonacardetailing", "s": "empresa", "v": ["redes"], "c": "", "i": ["img/ref-16.webp"], "city": ""}, {"n": "Camino del Coral", "h": "caminodelcoral", "s": "edu", "v": ["redes"], "c": "", "i": ["img/ref-17.webp"], "city": ""}, {"n": "Dr. Reinel Mesa", "h": "drreinelmesa", "s": "salud", "v": ["redes"], "c": "", "i": ["img/ref-18.webp"], "city": ""}, {"n": "Diin Espazzios", "h": "diin_espazzios", "s": "empresa", "v": ["redes"], "c": "", "i": ["img/piece-19-1.webp", "img/piece-19-2.webp", "img/piece-19-3.webp", "img/piece-19-4.webp", "img/ref-19.webp"], "city": ""}, {"n": "Dr. Jezid Miranda", "h": "dr_jezidmiranda", "s": "salud", "v": ["redes"], "c": "", "i": ["img/ref-20.webp"], "city": ""}, {"n": "Yira Pico Bodas y Eventos", "h": "bodasyeventosyirapico", "s": "eventos", "v": ["redes"], "c": "", "i": ["img/piece-21-1.webp", "img/piece-21-2.webp", "img/piece-21-3.webp", "img/piece-21-4.webp", "img/ref-21.webp"], "city": ""}, {"n": "Óptica Miramax", "h": "opticamiramax", "s": "salud", "v": ["redes"], "c": "", "i": ["img/ref-22.webp"], "city": ""}, {"n": "RSC Aires Acondicionados", "h": "refriserviciosdelacosta", "s": "empresa", "v": ["redes"], "c": "", "i": ["img/ref-23.webp"], "city": ""}, {"n": "NBM Contadores", "h": "nbmcontadores", "s": "empresa", "v": ["redes"], "c": "", "i": ["img/ref-24.webp"], "city": ""}, {"n": "Los Chilacos", "h": "loschilacos", "s": "gastro", "v": ["redes"], "c": "", "i": ["img/piece-25-1.webp", "img/piece-25-2.webp", "img/piece-25-3.webp", "img/piece-25-4.webp", "img/ref-25.webp"], "city": ""}, {"n": "Virtualis", "h": "virtualisctg", "s": "edu", "v": ["redes"], "c": "", "i": ["img/piece-26-1.webp", "img/piece-26-2.webp", "img/piece-26-3.webp", "img/piece-26-4.webp", "img/ref-26.webp"], "city": ""}, {"n": "Duni Aventuras", "h": "duniaventurasctg", "s": "eventos", "v": ["redes"], "c": "", "i": ["img/ref-27.webp"], "city": ""}, {"n": "Dr. Pablo Mercado", "h": "dr_pablomercado", "s": "salud", "v": ["redes"], "c": "", "i": ["img/ref-28.webp"], "city": ""}, {"n": "Adriano Ristorante", "h": "adrianoristorante", "s": "gastro", "v": ["pauta", "redes"], "c": "", "i": [], "city": ""}, {"n": "Alsina Atelier", "h": "alsina.atelier", "s": "moda", "v": ["pauta", "redes"], "c": "", "i": [], "city": ""}, {"n": "Capilla Restobar", "h": "capilla_restobar", "s": "gastro", "v": ["pauta", "redes"], "c": "", "i": [], "city": ""}, {"n": "Gutiérrez Coffee", "h": "gutierrezcoffee", "s": "gastro", "v": ["pauta", "redes"], "c": "", "i": [], "city": ""}, {"n": "Alimentos La Ideal", "h": "holasoyideal", "s": "gastro", "v": ["pauta", "redes"], "c": "", "i": [], "city": ""}, {"n": "Innata", "h": "innata.colombia", "s": "salud", "v": ["pauta", "redes"], "c": "", "i": [], "city": ""}, {"n": "Jalisco Gastro Bar", "h": "jalisco_gastro_bar", "s": "gastro", "v": ["pauta", "redes"], "c": "", "i": [], "city": ""}, {"n": "Majestic Joyería", "h": "majesticjoyeria_", "s": "moda", "v": ["pauta", "redes"], "c": "", "i": [], "city": ""}, {"n": "Joyería Mr Gold", "h": "mr_goldjoyeria", "s": "moda", "v": ["pauta", "redes"], "c": "", "i": [], "city": ""}, {"n": "Ponqués Olga Suárez", "h": "ponquesolgasuarez", "s": "gastro", "v": ["pauta", "redes"], "c": "", "i": [], "city": ""}, {"n": "Somnus Studio", "h": "somnusstudio7", "s": "salud", "v": ["pauta", "redes"], "c": "", "i": [], "city": ""}, {"n": "The Palace Fast Food", "h": "thepalacefastfood", "s": "gastro", "v": ["pauta", "redes"], "c": "", "i": [], "city": ""}, {"n": "Model Stage", "h": "", "s": "moda", "v": ["pauta", "redes"], "c": "", "i": [], "city": ""}, {"n": "Bruder", "h": "", "s": "empresa", "v": ["redes"], "c": "", "i": [], "city": ""}, {"n": "Alitas Colombianas", "h": "", "s": "gastro", "v": ["redes"], "c": "", "i": [], "city": ""}, {"n": "MinTIC", "h": "", "s": "empresa", "v": ["redes"], "c": "", "i": [], "city": ""}, {"n": "Varietale", "h": "", "s": "gastro", "v": ["redes"], "c": "", "i": [], "city": ""}];
+
+  const LOGO = Object.fromEntries(CASES.map(c => [c.id, [c.logo, c.bg, c.name]]));
+  const ADS = [
+    ['gcafe','Un espacio para ti, para conectar contigo, crear y disfrutar',76,1634],
+    ['autor','Sushi que entra por los ojos y conquista desde el primer bocado',86,1744],
+    ['gcafe','¿Buscando el lugar perfecto para tu próximo evento?',44,1786],
+    ['autor','Almuerzos deliciosos a precios especiales',67,1865,'img/top-autor-almuerzos.webp'],
+    ['autor','Viernes de instinto de autor',79,1898],
+    ['wato','¡Abrimos nuestras puertas!',56,2160,'img/top-wato-abrimos.webp'],
+    ['tadeo','¿Cómo secuestrarla fácilmente?',37,2162],
+    ['gcafe','Celebra un cumpleaños diferente en G Café',137,2190],
+    ['epicco','Este fin de semana, celebremos lo que realmente importa: estar juntos',33,2403,'img/case-epicco-2.webp'],
+    ['memos','¿Antojo de algo rico para cerrar la tarde?',60,2500],
+    ['tadeo','La Torta Matilda que todos aman está esperándote',32,2500],
+    ['autor','¿Sushi para empezar la semana? Siempre sí',94,4255],
+    ['epicco','Ya está todo listo',85,4703,'img/top-epicco-listo.webp'],
+    ['epicco','El nuevo menú de Epicco ya está listo para sorprenderte',73,5462]
+  ].map(([b, t, cv, cpr, img]) => ({b, t, cv, cpr, img}));
+  const SECT = {gastro:['Gastronomía','#FF5A5F','#FFD3D8'], salud:['Salud y belleza','#6C3BCB','#E6DCFB'], moda:['Moda y estilo','#F4A259','#FFEACB'], edu:['Educación','#2F6497','#DCEEF8'], empresa:['Empresas y servicios','#2E9461','#D8F2E2'], eventos:['Eventos y turismo','#1B1B1B','#E7E7E7']};
+  const SERVN = {redes:'Redes sociales', pauta:'Pauta digital'};
+  const EMO = ['happy','smirk','surprised','wink','thinking','neutral'];
+  $('#cases').innerHTML = CASES.map(c => `<article class="case" style="--cbg:${c.bg};--cfg:${c.fg};--cac:${c.ac}">
+      <button class="case-media" type="button" data-gal="case:${c.id}" aria-label="Ver piezas de ${c.name}"><img src="${c.imgs[0]}" alt="Pieza de ${c.name}" loading="lazy"><span class="count">${c.imgs.length} piezas</span></button>
+      <div class="case-body">
+        <img class="case-logo" src="${c.logo}" alt="Logo de ${c.name}" loading="lazy">
+        <small>${c.kind}</small><h4>${c.name}</h4>
+        <div class="ck">${c.k.map(([v, l]) => `<div><b>${v}</b><span>${l}</span></div>`).join('')}</div>
+        <p class="why"><b>Lo que funcionó:</b> ${c.why}</p>
+      </div></article>`).join('');
+  $('#wall').innerHTML = BRANDS.map((b, i) => {
+    const [sn, sc, sl] = SECT[b.s];
+    const meta = `${sn}${b.city ? ' · ' + b.city : ''}`;
+    if(b.i.length) return `<button type="button" class="tile has-img" data-i="${i}" data-s="${b.s}" data-v="${b.v.join(' ')}${b.c ? ' cifras' : ''}" data-gal="brand:${i}" aria-label="Ver piezas de ${b.n}">
+        <img src="${b.i[0]}" alt="" loading="lazy">${b.c ? '<span class="tag-case">Con cifras</span>' : ''}
+        <span class="tn"><b>${b.n}</b><small>${meta}</small></span></button>`;
+    return `<div class="tile" data-i="${i}" data-s="${b.s}" data-v="${b.v.join(' ')}" style="--tl:${sl}">
+        <span class="tf" data-face data-fc="${sc}" data-fbg="#FFFFFF" data-emotion="${EMO[i % EMO.length]}"></span>
+        <span class="tn"><b>${b.n}</b><small style="color:${sc}">${meta}</small></span></div>`;
+  }).join('');
+  const sectors = Object.keys(SECT).filter(k => BRANDS.some(b => b.s === k));
+  $('#fSector').insertAdjacentHTML('beforeend', `<button type="button" data-f="all" aria-pressed="true">Todos</button>` + sectors.map(k => `<button type="button" data-f="${k}" aria-pressed="false">${SECT[k][0]}</button>`).join(''));
+  $('#fServ').insertAdjacentHTML('beforeend', `<button type="button" data-f="all" aria-pressed="true">Todos</button><button type="button" data-f="redes" aria-pressed="false">Redes sociales</button><button type="button" data-f="pauta" aria-pressed="false">Pauta digital</button><button type="button" data-f="cifras" aria-pressed="false">Con cifras</button>`);
 
   $$('[data-face]').forEach(makeFace);
   const faceOf = el => faces.find(f => f.host === el);
@@ -956,13 +1104,13 @@ Reglas: responde en español de Colombia, cálido y directo, como un buen vended
   calc();
 
   /* ================== MARQUESINA DE MARCAS ================== */
-  const BR = [['Bruder','#FF5A5F','#FFD3D8','happy'],['Alitas Colombianas','#F4A259','#FFEACB','smirk'],['MinTIC','#2F6497','#DCEEF8','surprised'],['Vitalia','#2E9461','#D8F2E2','happy'],['Varietale','#6C3BCB','#E6DCFB','wink']];
+  const BR = BRANDS.filter((b, i) => i % 2 === 0).slice(0, 18).map((b, i) => [b.n, SECT[b.s][1], SECT[b.s][2], EMO[i % EMO.length]]);
   const mq = $('#mqIn');
   const one = BR.map(([n, c, l, e]) => `<span>${n}<span class="mf" data-face data-fc="${c}" data-fbg="${l}" data-emotion="${e}"></span></span>`).join('');
   mq.innerHTML = one + one;
   $$('[data-face]', mq).forEach(makeFace);
   if(hasGsap && !reduce){
-    const tw = gsap.to(mq, {xPercent:-50, duration:36, repeat:-1, ease:'none'});
+    const tw = gsap.to(mq, {xPercent:-50, duration:90, repeat:-1, ease:'none'});
     ScrollTrigger.create({trigger:'.trusted', start:'top bottom', end:'bottom top', onUpdate: s => { const v = s.getVelocity(); gsap.to(tw, {timeScale: (s.direction || 1)*(1 + Math.min(Math.abs(v)/300, 5)), duration:.2, overwrite:true}); gsap.to(tw, {timeScale: s.direction || 1, duration:1.2, delay:.25}); }});
   }
 
@@ -1070,6 +1218,84 @@ Reglas: responde en español de Colombia, cálido y directo, como un buen vended
     });
   });
 
+  /* ================== RANKING DE ANUNCIOS ================== */
+  const topEl = $('#top');
+  const money0 = v => '$' + v.toLocaleString('es-CO');
+  function renderTop(k){
+    const list = [...ADS].sort((a, b) => k === 'cpr' ? a.cpr - b.cpr : b.cv - a.cv).slice(0, 8);
+    const mx = Math.max(...list.map(a => k === 'cpr' ? 1/a.cpr : a.cv));
+    topEl.innerHTML = list.map((a, i) => {
+      const [logo, bg, name] = LOGO[a.b];
+      const w = Math.round((k === 'cpr' ? (1/a.cpr) : a.cv)/mx*100);
+      const th = a.img ? `<img src="${a.img}" alt="Anuncio de ${name}" loading="lazy">` : `<img class="lg" src="${logo}" alt="Logo de ${name}" loading="lazy">`;
+      return `<li><span class="rk">${i + 1}</span>
+        <button type="button" class="th" style="--tb:${bg}" ${a.img ? `data-zoom="${a.img}" data-name="${esc(name)}"` : 'tabindex="-1"'} aria-label="Ver anuncio de ${name}">${th}</button>
+        <div class="tx"><small>${name}</small><q>${esc(a.t)}</q><div class="bar"><i style="--w:${w}%"></i></div></div>
+        <div class="nm">${k === 'cpr' ? `<b>${money0(a.cpr)}</b><span>por conversación · ${a.cv} en total</span>` : `<b>${a.cv}</b><span>conversaciones · ${money0(a.cpr)} c/u</span>`}</div></li>`;
+    }).join('');
+    if(hasGsap && !reduce){
+      gsap.fromTo('#top li', {x:-24, opacity:0}, {x:0, opacity:1, duration:.45, stagger:.05, ease:'power3.out'});
+      gsap.fromTo('#top .bar i', {width:0}, {width:(i, el) => el.style.getPropertyValue('--w'), duration:1, stagger:.05, ease:'power3.out', delay:.15});
+    }
+  }
+  renderTop('cpr');
+  $('#topSort').addEventListener('click', e => {
+    const b = e.target.closest('button'); if(!b) return;
+    $$('#topSort button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    renderTop(b.dataset.k);
+  });
+  topEl.addEventListener('click', e => { const t = e.target.closest('[data-zoom]'); if(t) openG([t.dataset.zoom], t.dataset.name, 'Anuncio destacado', t); });
+
+  /* ================== MURO, GALERÍA Y CIFRAS ================== */
+  const wf = {s:'all', v:'all'};
+  const applyWall = () => {
+    let n = 0;
+    $$('#wall .tile').forEach(t => {
+      const ok = (wf.s === 'all' || t.dataset.s === wf.s) && (wf.v === 'all' || t.dataset.v.split(' ').includes(wf.v));
+      t.hidden = !ok; if(ok) n++;
+    });
+    $('#wallCount').textContent = n === 1 ? '1 marca' : n + ' marcas';
+    if(hasGsap && !reduce) gsap.fromTo('#wall .tile:not([hidden])', {opacity:0, y:14}, {opacity:1, y:0, duration:.4, stagger:.015, ease:'power2.out', overwrite:true});
+    if(hasGsap) ScrollTrigger.refresh();
+  };
+  [['#fSector','s'], ['#fServ','v']].forEach(([sel, key]) => $(sel).addEventListener('click', e => {
+    const b = e.target.closest('button'); if(!b) return;
+    wf[key] = b.dataset.f;
+    $$('button', $(sel)).forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    applyWall();
+  }));
+  applyWall();
+
+  const lb = $('#lb'), lbImg = $('#lbImg'), lbCap = $('#lbCap');
+  let gal = [], gi = 0, galName = '', galMeta = '', lastFocus = null;
+  const showG = () => { lbImg.src = gal[gi]; lbImg.alt = 'Pieza de ' + galName; lbCap.innerHTML = `${esc(galName)}<small>${esc(galMeta)} · ${gi + 1} de ${gal.length}</small>`; };
+  const openG = (imgs, name, meta, from) => { gal = imgs; gi = 0; galName = name; galMeta = meta; lastFocus = from; showG(); lb.classList.add('open'); document.body.style.overflow = 'hidden'; $('#lbX').focus(); if(hasGsap && !reduce) gsap.fromTo('#lb figure', {scale:.94, opacity:0}, {scale:1, opacity:1, duration:.35, ease:'back.out(1.6)'}); };
+  const closeG = () => { lb.classList.remove('open'); document.body.style.overflow = ''; if(lastFocus) lastFocus.focus(); };
+  document.addEventListener('click', e => {
+    const t = e.target.closest('[data-gal]'); if(!t) return;
+    const [kind, id] = t.dataset.gal.split(':');
+    if(kind === 'case'){ const c = CASES.find(x => x.id === id); openG(c.imgs, c.name, c.kind, t); }
+    else { const b = BRANDS[+id]; openG(b.i, b.n, SECT[b.s][0] + (b.v.length ? ' · ' + b.v.map(v => SERVN[v]).join(' y ') : ''), t); }
+  });
+  $('#lbX').addEventListener('click', closeG);
+  $('#lbP').addEventListener('click', () => { gi = (gi - 1 + gal.length) % gal.length; showG(); });
+  $('#lbN').addEventListener('click', () => { gi = (gi + 1) % gal.length; showG(); });
+  lb.addEventListener('click', e => { if(e.target === lb) closeG(); });
+  addEventListener('keydown', e => {
+    if(!lb.classList.contains('open')) return;
+    if(e.key === 'Escape') closeG();
+    if(e.key === 'ArrowRight') $('#lbN').click();
+    if(e.key === 'ArrowLeft') $('#lbP').click();
+  });
+
+  $$('.stat b[data-count]').forEach(el => {
+    const v = +el.dataset.count, pre = el.dataset.pre || '', fmtN = n => pre + Math.round(n).toLocaleString('es-CO');
+    if(!hasGsap || reduce){ el.textContent = fmtN(v); return; }
+    el.textContent = fmtN(v);
+    const o = {n:0};
+    ScrollTrigger.create({trigger:el, start:'top 88%', once:true, onEnter:() => { el.textContent = '0'; gsap.to(o, {n:v, duration:1.8, ease:'power3.out', onUpdate:() => el.textContent = fmtN(o.n)}); }});
+  });
+
   /* ================== WHATSAPP ================== */
   const wa = $('#waBtn');
   if(WHATSAPP){
@@ -1095,7 +1321,7 @@ Reglas: responde en español de Colombia, cálido y directo, como un buen vended
     gsap.from('.prod', {y:60, opacity:0, duration:.9, ease:'expo.out', stagger:.12, scrollTrigger:{trigger:'.p-grid', start:'top 82%', once:true}});
     gsap.from('.svc', {y:40, opacity:0, duration:.7, ease:'expo.out', stagger:.05, scrollTrigger:{trigger:'#catGrid', start:'top 85%', once:true}});
     gsap.from('.dcard', {y:40, opacity:0, duration:.7, ease:'expo.out', stagger:.07, scrollTrigger:{trigger:'.d-grid', start:'top 85%', once:true}});
-    gsap.from('.ptile', {y:40, opacity:0, duration:.7, ease:'expo.out', stagger:.07, scrollTrigger:{trigger:'.port-grid', start:'top 85%', once:true}});
+    gsap.from('.case', {x:60, opacity:0, duration:.8, ease:'expo.out', stagger:.08, scrollTrigger:{trigger:'#cases', start:'top 85%', once:true}});
     gsap.from('.step', {y:50, opacity:0, duration:.8, ease:'expo.out', stagger:.1, scrollTrigger:{trigger:'.s-grid', start:'top 82%', once:true}});
     gsap.from('.final-face', {scale:.5, rotation:-20, opacity:0, duration:1.1, ease:'back.out(1.6)', scrollTrigger:{trigger:'.final', start:'top 70%', once:true}});
   }
