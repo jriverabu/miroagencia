@@ -128,11 +128,19 @@ button{background:none;border:0;cursor:pointer}
 .toggle{position:relative;width:64px;height:36px;border-radius:999px;background:rgba(255,255,255,.18)}
 .toggle i{position:absolute;left:4px;top:4px;width:28px;height:28px;border-radius:50%;background:var(--white)}
 .nphone{justify-self:center;width:min(100%,380px);background:#0d0d0d;border-radius:40px;padding:12px;box-shadow:0 0 0 1px rgba(255,255,255,.08)}
-.nscreen{background:#151515;border-radius:30px;height:min(560px,64svh);min-height:420px;overflow:hidden;display:flex;flex-direction:column}
+.nscreen{position:relative;background:radial-gradient(120% 70% at 50% 0%,#2a1a1d 0%,#151515 60%);border-radius:30px;height:min(560px,70svh);min-height:400px;overflow:hidden;display:flex;flex-direction:column}
+.lock{text-align:center;padding:14px 0 10px;flex:none}
+.lock b{display:block;font-weight:800;font-variation-settings:"wdth" 75;font-size:clamp(46px,5vw,64px);line-height:.95;font-variant-numeric:tabular-nums}
+.lock small{font-size:13px;opacity:.6}
+.nprog{height:4px;margin:0 18px 10px;border-radius:2px;background:rgba(255,255,255,.1);overflow:hidden;flex:none}
+.nprog i{display:block;height:100%;width:0;background:var(--red)}
+.night .hint{display:inline-flex;align-items:center;gap:8px;margin-top:14px;font-weight:700;font-size:14px;color:rgba(255,255,255,.7)}
+.night .hint i{display:inline-block;width:10px;height:10px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);animation:bob 1.2s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(4px) rotate(45deg)}}
 .nhead{display:flex;justify-content:space-between;align-items:center;padding:16px 18px 12px;border-bottom:1px solid rgba(255,255,255,.08)}
 .nhead b{font-size:15px}
 .badge{min-width:30px;height:24px;padding:0 8px;border-radius:999px;background:var(--red);font-size:13px;font-weight:800;display:grid;place-items:center;font-variant-numeric:tabular-nums}
-.nlist{flex:1;overflow:hidden;padding:10px 12px;display:flex;flex-direction:column;gap:8px;justify-content:flex-end}
+.nlist{flex:1;min-height:0;overflow:hidden;padding:0 12px 12px;display:flex;flex-direction:column-reverse;gap:8px;justify-content:flex-end}
 .nmsg{display:grid;grid-template-columns:36px 1fr auto;gap:10px;align-items:center;padding:10px 12px;border-radius:14px;background:#202020}
 .nmsg .av{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:14px;color:var(--ink)}
 .nmsg b{display:block;font-size:14px;line-height:1.2}
@@ -479,11 +487,14 @@ button{background:none;border:0;cursor:pointer}
           <div class="cnt bad" id="c2"><b id="c2v">0</b><span id="c2l">clientes que le compraron a otro</span></div>
         </div>
         <div class="switch-row"><span class="toggle" aria-hidden="true"><i id="tog"></i></span><span id="togL">Miró apagado</span></div>
-        <p class="note" style="color:rgba(255,255,255,.55);margin-top:14px">Noche de ejemplo para ilustrar. Sigue bajando.</p>
+        <p class="hint" id="nightHint"><i></i>Baja para que avance la noche</p>
+        <p class="note" style="color:rgba(255,255,255,.45);margin-top:8px">Noche de ejemplo para ilustrar.</p>
       </div>
       <div class="nphone" aria-hidden="true">
         <div class="nscreen">
           <div class="nhead"><b>WhatsApp del negocio</b><span class="badge" id="badge">0</span></div>
+          <div class="lock"><b id="lockT">7:48</b><small id="lockS">Local cerrado · tú descansando</small></div>
+          <div class="nprog"><i id="nprog"></i></div>
           <div class="nlist" id="nlist"></div>
         </div>
       </div>
@@ -1041,16 +1052,27 @@ Reglas: responde en español de Colombia, cálido y directo, como un buen vended
   function setNight(p){
     // fase 1: la noche sin Miró (0 a .62) · fase 2: con Miró (.66 a 1)
     const p1 = Math.min(1, p/.62);
-    const shown = Math.round(p1*NIGHT.length);
-    nmsgs.forEach((m, i) => { m.style.display = i < shown ? '' : 'none'; });
+    const shown = Math.max(2, Math.round(p1*NIGHT.length));
+    nmsgs.forEach((m, i) => {
+      const vis = i < shown;
+      if(vis && m.style.display === 'none' && hasGsap && !reduce){ m.style.display = ''; gsap.fromTo(m, {y:-26, opacity:0, scale:.96}, {y:0, opacity:1, scale:1, duration:.4, ease:'back.out(2)'}); gsap.fromTo('#badge', {scale:1.5}, {scale:1, duration:.4, ease:'back.out(3)'}); }
+      else m.style.display = vis ? '' : 'none';
+    });
+    $('#nprog').style.width = (Math.min(1, p/.9)*100).toFixed(1) + '%';
+    $('#nightHint').style.opacity = p > .92 ? 0 : 1;
     const last = NIGHT[Math.max(0, shown - 1)];
-    if(shown === 0){ $('#clk').textContent = '7:00'; $('#ampm').textContent = 'p. m.'; }
-    else if(p < .62){ $('#clk').textContent = last[0]; $('#ampm').textContent = last[1]; }
+    if(p < .62){ $('#clk').textContent = last[0]; $('#ampm').textContent = last[1]; }
     const on = p >= .66;
     const doneN = on ? Math.min(NIGHT.length, Math.round(((p - .66)/.24)*NIGHT.length)) : 0;
     if(p >= .62 && !on){ $('#clk').textContent = '6:00'; $('#ampm').textContent = 'a. m.'; }
-    if(on){ const t = doneN ? NIGHT[doneN - 1] : ['7:00','p. m.']; $('#clk').textContent = t[0]; $('#ampm').textContent = t[1]; }
-    nmsgs.forEach((m, i) => m.classList.toggle('done', i < doneN));
+    if(on){ $('#clk').textContent = '6:00'; $('#ampm').textContent = 'a. m.'; }
+    $('#lockT').textContent = $('#clk').textContent;
+    $('#lockS').textContent = on ? 'Miró respondiendo · tú descansando' : (p >= .45 ? 'Clientes esperando respuesta' : 'Local cerrado · tú descansando');
+    nmsgs.forEach((m, i) => {
+      const d = i >= NIGHT.length - doneN;
+      if(d && !m.classList.contains('done') && hasGsap && !reduce) gsap.fromTo(m, {scale:.97}, {scale:1, duration:.35, ease:'back.out(3)'});
+      m.classList.toggle('done', d);
+    });
     $('#badge').textContent = on ? Math.max(0, NIGHT.length - doneN) : shown;
     const lost = lostAt.filter(i => i < shown).length + (p1 >= 1 ? 1 : 0);
     if(!on){
@@ -1076,7 +1098,7 @@ Reglas: responde en español de Colombia, cálido y directo, como un buen vended
   if(hasGsap){
     const mm = gsap.matchMedia();
     mm.add('(min-width: 0px)', () => {
-      ScrollTrigger.create({trigger:'#noche', start:'top top', end:'+=320%', pin:'.night-pin', scrub:true,
+      ScrollTrigger.create({trigger:'#noche', start:'top top', end:'+=240%', pin:'.night-pin', scrub:true,
         onUpdate: s => setNight(s.progress)});
     });
   }
